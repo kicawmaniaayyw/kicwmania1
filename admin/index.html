@@ -619,6 +619,74 @@ button.logout-btn:active {
 
 
 
+.welcome-box{
+  background: #1b6000;
+  padding: 14px 16px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom: 15px;
+}
+
+.welcome-content{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 🔹 Logo container */
+.logo-wrap{
+  width: 45px;
+  height: 45px;
+  background: #f1f3f6;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-admin{
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+/* 🔹 Text */
+.text-wrap{
+  display: flex;
+  flex-direction: column;
+}
+
+.label{
+  font-size: 12px;
+  color: #c1c1c1;
+  margin: 0;
+}
+
+#namaAdmin{
+  margin: 2px 0 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #f0f0f0;
+}
+
+
+
+/* animasi muncul */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+
+
 
 
 </style>
@@ -835,7 +903,24 @@ button.logout-btn:active {
   <button onclick="show('va', this)">Virtual Account</button>
   <button onclick="showContact(this)">Pengaturan</button>
   <button onclick="show('vscode', this)">Atur Iklan</button>
-  <button class="logout-btn" onclick="logoutAdminX()">Logout</button>
+
+
+<div class="welcome-box">
+  <div class="welcome-content">
+    
+    <div class="logo-wrap">
+      <img src="abr.png" class="logo-admin" />
+    </div>
+
+    <div class="text-wrap">
+      <p class="label">Login Sebagai</p>
+      <h3 id="namaAdmin">Memuat...</h3>
+    </div>
+  </div>
+    <button class="logout-btn" onclick="logoutAdminX()">Logout</button>
+
+</div>
+
 
 
   <footer class="footer">
@@ -1584,6 +1669,13 @@ function formatRupiah(angka){
 // SIMPAN DATA LOGIN SEMENTARA (hanya JS)
 // buat login global supaya bisa diakses onclick HTML
 // LOGIN ADMIN FIREBASE (VERSI BARU)
+// 🔥 GLOBAL VARIABLE (penyimpan admin aktif)
+let currentAdmin = null;
+
+
+// ========================
+// 🔐 LOGIN ADMIN
+// ========================
 window.loginAdminX = async function(){
 
   const wa = document.getElementById("inputAdminWaX").value.trim();
@@ -1601,17 +1693,28 @@ window.loginAdminX = async function(){
       return alert("Akun tidak ditemukan!");
     }
 
-    const admin = snap.docs[0].data();
+    const doc = snap.docs[0];
+    const admin = doc.data();
 
     if(admin.password !== pass){
       return alert("Password salah!");
     }
 
-    // ✅ LOGIN SUKSES
+    // ✅ SIMPAN KE VARIABLE (bukan storage)
+    currentAdmin = {
+      id: doc.id,
+      ...admin
+    };
+
+    // ✅ TAMPILKAN NAMA LANGSUNG
+    const namaEl = document.getElementById("namaAdmin");
+    if(namaEl){
+      namaEl.textContent = currentAdmin.namaAdmin || "Admin";
+    }
+
+    // ✅ TAMPILKAN UI
     document.getElementById("modalLoginAdminX").style.display = "none";
     document.querySelector(".sidebar").style.display = "block";
-
-    localStorage.setItem("loginAdminX", "true");
 
     showToast("Login berhasil ✅");
 
@@ -1623,23 +1726,23 @@ window.loginAdminX = async function(){
 
 
 
-document.addEventListener("DOMContentLoaded", function(){
-  document.getElementById("btnAdminLoginX")
-    .addEventListener("click", loginAdminX);
-});
-
+// ========================
+// 🚀 INIT HALAMAN
+// ========================
 document.addEventListener("DOMContentLoaded", function(){
 
+  const btnLogin = document.getElementById("btnAdminLoginX");
   const modal = document.getElementById("modalLoginAdminX");
   const sidebar = document.querySelector(".sidebar");
 
-  if(localStorage.getItem("loginAdminX") === "true"){
-    modal.style.display = "none";
-    sidebar.style.display = "block";
-  } else {
-    modal.style.display = "flex";
-    sidebar.style.display = "none";
+  // 🔹 event tombol login
+  if(btnLogin){
+    btnLogin.addEventListener("click", loginAdminX);
   }
+
+  // 🔹 default kondisi (belum login)
+  modal.style.display = "flex";
+  sidebar.style.display = "none";
 
 });
 
@@ -1659,6 +1762,8 @@ function isLoggedIn() {
 if(localStorage.getItem("adminLogin") === "true"){
   document.getElementById("loginModal").style.display = "none";
 }
+
+
 
 
 
