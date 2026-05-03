@@ -639,32 +639,42 @@ button.logout-btn:active {
 ">
 
   <!-- CARD -->
-  <div style="
-    width: 100%;
-    max-width: 380px;
+<div style="
+  width: 100%;
+  max-width: 380px;
 
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 
-    border: 1px solid rgba(255,255,255,0.25);
+  border: 1px solid rgba(255,255,255,0.25);
 
-    border-radius: 18px;
-    padding: 28px;
+  border-radius: 18px;
+  padding: 28px;
 
-    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
-    color: #fff;
-    text-align: center;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+  color: #fff;
+  text-align: center;
+">
+
+  <!-- LOGO -->
+  <img src="logo-preview.png"Logo"
+    style="
+      width: 70px;
+      height: 70px;
+      margin-bottom: 12px;
+      border-radius: 50px;
+    "
+  >
+
+  <h2 style="
+    margin-bottom: 18px;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
   ">
-
-    <h2 style="
-      margin-bottom: 18px;
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    ">
-      Login Admin
-    </h2>
+    Login Admin
+  </h2>
 
     <!-- INPUT WA -->
     <input type="text" id="inputAdminWaX" placeholder="Nomor WA"
@@ -733,7 +743,17 @@ button.logout-btn:active {
         Ganti Password
       </button>
     </div>
-
+<div style="
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.2);
+  font-size: 12px;
+  opacity: 0.8;
+  line-height: 1.6;
+">
+  © 2026 Rupiah Segar • All Rights Reserved <br>
+  Developed by <b style="color:#fff;">Pt.digitalind</b>
+</div>
   </div>
 </div>
 
@@ -744,7 +764,7 @@ button.logout-btn:active {
 <div id="modalGantiPassX" style="
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgb(159 159 159);
   display:none;
   justify-content:center;
   align-items:center;
@@ -761,7 +781,7 @@ button.logout-btn:active {
 
 <div style="position:relative;">
   <input type="password" id="oldPassX" placeholder="Password Lama"
-  style="width:100%;padding:10px;margin:8px 0;">
+  style="width:90%;padding:10px;margin:8px 0;">
 
   <img src="pwd_hide_icon.png" 
   onclick="togglePassX('oldPassX', this)" 
@@ -770,7 +790,7 @@ button.logout-btn:active {
 
 <div style="position:relative;">
   <input type="password" id="newPassX" placeholder="Password Baru"
-  style="width:100%;padding:10px;margin:8px 0;">
+  style="width:90%;padding:10px;margin:8px 0;">
 
   <img src="pwd_hide_icon.png" 
   onclick="togglePassX('newPassX', this)" 
@@ -779,7 +799,7 @@ button.logout-btn:active {
 
 <div style="position:relative;">
   <input type="password" id="confirmPassX" placeholder="Konfirmasi Password"
-  style="width:100%;padding:10px;margin:8px 0;">
+  style="width:90%;padding:10px;margin:8px 0;">
 
   <img src="pwd_hide_icon.png" 
   onclick="togglePassX('confirmPassX', this)" 
