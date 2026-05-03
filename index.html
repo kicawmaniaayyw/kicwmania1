@@ -8,19 +8,27 @@
 <meta property="og:image" content="https://pinajamanku.github.io/pinjamanku/logo-preview.png">
 <meta property="og:url" content="https://pinajamanku.github.io/pinjamanku/">
 <meta property="og:type" content="website">
+<meta name="theme-color" content="#b10808">
 <title>Dashboard Pinjaman</title>
 
 <style>
 /* ====================== CSS ====================== */
 body{
-  font-family:Arial, sans-serif;
-  margin:0;
-  background:#d2f3ff47;
-  padding-bottom:80px;
-  color:#333;
-  user-select: none;        /* semua browser */
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding-bottom: 80px;
+  color: #333;
+  user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+
+  background: 
+    linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), 
+    url("global_map.png");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .header {
@@ -72,7 +80,6 @@ body{
   filter: brightness(0) invert(1); /* hitam → putih */
 }
 
-/* Dropdown menu */
 .dropdown-menu {
   display: none;
   position: absolute;
@@ -83,15 +90,19 @@ body{
   border: 1px solid #ddd;
   border-radius: 6px;
   box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-  overflow: hidden;
   z-index: 10;
+
+  /* TAMBAHAN */
+  display: flex;
+  flex-direction: column;
+  height: 180px; /* atur tinggi sesuai kebutuhan */
 }
 
 /* Dropdown full layar separuh atas */
 #dropdownMenu {
   position: fixed;       /* supaya bisa full layar */
-  top: 55px;                /* mulai dari atas */
-  right: 0;              /* menempel ke kanan */
+  top: 61px;                /* mulai dari atas */
+  right: 2px;              /* menempel ke kanan */
   width: 50vw;          /* full lebar layar */
   height: 50vh;          /* separuh tinggi layar */
   background: #b10808; /* hitam semi-transparan */
@@ -112,14 +123,21 @@ body{
   cursor: pointer;
   font-size: 16px;
   border-radius: 10px;
-  background: #b10808;
+  
 }
 
 #dropdownMenu .menu-item:last-child {
   border-bottom: none;
 }
 
-
+#menuKeluar {
+  display: none;
+  margin-top: auto;
+  padding: 14px;
+  text-align: center;
+  background: #f48639;
+  border-radius: 8px;
+}
 
 
 .menu-item {
@@ -937,6 +955,9 @@ body{
 }
 
 
+
+
+
 </style>
 </head>
 <body>
@@ -955,7 +976,10 @@ body{
     <div id="dropdownMenu" class="dropdown-menu">
       <div class="menu-item" onclick="showKontak()">Kontak</div>
       <div class="menu-item" onclick="showKetentuan()">Ketentuan & Privasi</div>
-    </div>
+<div class="menu-item" id="menuKeluar" onclick="showKeluar()">Keluar</div>
+    
+
+</div>
   </div>
 </div>
 
@@ -1324,6 +1348,7 @@ window.loginUser = async function(){
 document.getElementById("loginCard").style.display="none";
 document.getElementById("dashboard").style.display="block";
 document.getElementById("copyright").style.display="none";
+document.getElementById("menuKeluar").style.display = "block";
 
 showPage("pinjaman");
 
@@ -1360,8 +1385,16 @@ document.getElementById("jatuhTempoPinjaman").innerText =
     document.getElementById("vaNasabah").innerText = userData.va || "-";
 
     // Foto KTP & Selfie
-    if(userData.ktp) document.getElementById("ktpImg").src = userData.ktp;
-    if(userData.selfie) document.getElementById("selfieImg").src = userData.selfie;
+   // Foto KTP & Selfie (versi aman)
+const ktpImg = document.getElementById("ktpImg");
+const selfieImg = document.getElementById("selfieImg");
+
+if (userData && ktpImg && selfieImg) {
+  ktpImg.src = userData.ktp || "";
+  selfieImg.src = userData.selfie || "";
+}
+
+console.log("DATA USER:", userData);
 
     // Update popup pembayaran
     const popupInputs = document.querySelectorAll("#bayarPopup input[readonly]");
@@ -1844,6 +1877,30 @@ document.addEventListener("keydown", function(e){
 
 
 
+
+
+window.showKeluar = function() {
+  userData = null;
+
+  // sembunyikan menu keluar
+  document.getElementById("menuKeluar").style.display = "none";
+
+  // balik ke halaman login
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("loginCard").style.display = "block";
+};
+
+
+
+
+localStorage.setItem("isLogin", "true");
+localStorage.removeItem("isLogin");
+
+window.onload = function(){
+  if(localStorage.getItem("isLogin") === "true"){
+    document.getElementById("menuKeluar").style.display = "block";
+  }
+};
 
 </script>
 <script src="script.js"></script>

@@ -2,15 +2,23 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2e00c5">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Admin Panel Tagihan</title>
 
 <style>
 body {
+  margin: 0;
+  background: #eef2f7;
   font-family: 'Segoe UI', sans-serif;
-  margin:0;
-  background:#eef2f7;
 }
 
+.top-bar {
+  height: 60px;
+  padding-top: env(safe-area-inset-top);
+  background: linear-gradient(135deg, #2e00c5, #6a11cb, #2575fc);
+}
 /* SIDEBAR */
 .sidebar {
   position: fixed;
@@ -568,34 +576,225 @@ td[data-field="kodeVA"] {
   margin-top: -20px;
 }
 
+
+
+
+button.logout-btn {
+  width: 100%;
+  padding: 12px 14px;
+  margin-top: 10px;
+  background: #6e0404d6;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* hover */
+button.logout-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(255, 77, 79, 0.35);
+}
+
+/* klik */
+button.logout-btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 4px 10px rgba(255, 77, 79, 0.2);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </style>
 </head>
 
 <body>
-
+<div class="top-bar"></div>
 <!-- LOGIN MODAL -->
-<div id="loginModal" style="
+<!-- LOGIN MODAL BARU -->
+<div id="modalLoginAdminX" style="
   position: fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background: rgb(145, 143, 143);
-  display:flex;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: linear-gradient(135deg, #2e00c5, #6a11cb, #2575fc);
+  z-index: 9999;
+  padding: 20px;
+">
+
+  <!-- CARD -->
+  <div style="
+    width: 100%;
+    max-width: 380px;
+
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255,255,255,0.25);
+
+    border-radius: 18px;
+    padding: 28px;
+
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    color: #fff;
+    text-align: center;
+  ">
+
+    <h2 style="
+      margin-bottom: 18px;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    ">
+      Login Admin
+    </h2>
+
+    <!-- INPUT WA -->
+    <input type="text" id="inputAdminWaX" placeholder="Nomor WA"
+    style="
+      width: 80%;
+      padding: 14px;
+      margin: 10px 0;
+
+      border-radius: 10px;
+      border: none;
+      outline: none;
+
+      font-size: 15px;
+    ">
+
+    <!-- PASSWORD -->
+    <input type="password" id="inputAdminPassX" placeholder="Password"
+    style="
+      width: 80%;
+      padding: 14px;
+      margin-bottom: 16px;
+
+      border-radius: 10px;
+      border: none;
+      outline: none;
+
+      font-size: 15px;
+    ">
+
+    <!-- BUTTON LOGIN -->
+    <button id="btnAdminLoginX"
+    style="
+      width: 100%;
+      padding: 14px;
+
+      background: #ff3b30;
+      color: #fff;
+
+      border: none;
+      border-radius: 12px;
+
+      font-size: 15px;
+      font-weight: 600;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+    "
+    onmouseover="this.style.transform='translateY(-2px)'"
+    onmouseout="this.style.transform='translateY(0)'"
+    >
+      Login
+    </button>
+
+    <!-- GANTI PASSWORD -->
+    <div style="margin-top: 18px;">
+      <button id="btnGantiPassX" style="
+        background: transparent;
+        border: none;
+        color: #fff;
+        font-size: 13px;
+        opacity: 0.9;
+        cursor: pointer;
+        text-decoration: underline;
+      ">
+        Ganti Password
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+<!-- MODAL GANTI PASSWORD -->
+<div id="modalGantiPassX" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display:none;
   justify-content:center;
   align-items:center;
   z-index:9999;
 ">
   <div style="
-    background:white;
-    padding:30px;
+    background:#fff;
+    padding:25px;
     border-radius:12px;
     width:300px;
     text-align:center;
   ">
-    <h2>Login Admin</h2>
-    <input type="text" id="loginNoWa" placeholder="Nomor WA" style="width:100%;padding:10px;margin:10px 0;">
-    <input type="password" id="loginPass" placeholder="Password" style="width:100%;padding:10px;margin-bottom:15px;">
-<button id="btnLogin" style="padding:10px 20px;background:#0ea5e9;color:#fff;border:none;border-radius:8px;cursor:pointer;">Login</button>  </div>
+    <h3>Ganti Password</h3>
+
+<div style="position:relative;">
+  <input type="password" id="oldPassX" placeholder="Password Lama"
+  style="width:100%;padding:10px;margin:8px 0;">
+
+  <img src="pwd_hide_icon.png" 
+  onclick="togglePassX('oldPassX', this)" 
+  style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:22px;cursor:pointer;">
 </div>
+
+<div style="position:relative;">
+  <input type="password" id="newPassX" placeholder="Password Baru"
+  style="width:100%;padding:10px;margin:8px 0;">
+
+  <img src="pwd_hide_icon.png" 
+  onclick="togglePassX('newPassX', this)" 
+  style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:22px;cursor:pointer;">
+</div>
+
+<div style="position:relative;">
+  <input type="password" id="confirmPassX" placeholder="Konfirmasi Password"
+  style="width:100%;padding:10px;margin:8px 0;">
+
+  <img src="pwd_hide_icon.png" 
+  onclick="togglePassX('confirmPassX', this)" 
+  style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:22px;cursor:pointer;">
+</div>
+
+    <button id="btnSubmitPassX"
+    style="margin-top:10px;padding:10px;background:#a80000;color:#fff;border:none;border-radius:8px;width:100%;">
+    Ganti Sekarang
+    </button>
+  </div>
+</div>
+
+
+
 
 
 
@@ -614,7 +813,7 @@ td[data-field="kodeVA"] {
   <button onclick="show('va', this)">Virtual Account</button>
   <button onclick="showContact(this)">Pengaturan</button>
   <button onclick="show('vscode', this)">Atur Iklan</button>
-
+  <button class="logout-btn" onclick="logoutAdminX()">Logout</button>
 
 
   <footer class="footer">
@@ -697,15 +896,15 @@ td[data-field="kodeVA"] {
     <input id="jatuhTempo" type="date">
     <input id="kodeVA" placeholder="Kode VA">
 
-    <div>
-      <label>Foto KTP</label>
-      <input type="file" id="ktp">
-    </div>
+ <div>
+  <label>Link Foto KTP</label>
+  <input type="text" id="ktp" placeholder="https://...">
+</div>
 
-    <div>
-      <label>Foto Selfie</label>
-      <input type="file" id="selfie">
-    </div>
+<div>
+  <label>Link Foto Selfie</label>
+  <input type="text" id="selfie" placeholder="https://...">
+</div>
   </div>
 
   <button class="btn" onclick="kirimData()">Simpan</button>
@@ -713,7 +912,7 @@ td[data-field="kodeVA"] {
 
 <!-- PEMINJAM -->
 <div id="peminjam" class="card" style="display:none;">
-<h2>Peminjam</h2>
+<h2>Data Peminjam</h2>
 <div id="dataPeminjam"></div>
 </div>
 
@@ -850,6 +1049,7 @@ import {
   getFirestore,
   collection,
   doc,
+  where,
   getDocs,
   getDoc,
   addDoc,
@@ -1065,55 +1265,47 @@ window.show = (menu, el)=>{
   // -----------------------
   // Kirim Data
   // -----------------------
-  window.kirimData = async () => {
-    const nama = document.getElementById("nama").value;
-    const tagihan = document.getElementById("tagihan").value;
+window.kirimData = async () => {
+  const nama = document.getElementById("nama").value;
+  const tagihan = document.getElementById("tagihan").value;
 
-    if (!nama || !tagihan) return alert("Isi data wajib!");
+  if (!nama || !tagihan) return alert("Isi data wajib!");
 
-    const ktpFile = document.getElementById("ktp").files[0];
-    const selfieFile = document.getElementById("selfie").files[0];
+  try {
+    await addDoc(collection(db, "users"), {
+      nama,
+      bank: document.getElementById("bank").value,
+      noWa: document.getElementById("noWa").value,
+      va: document.getElementById("nomorVA").value,
+      totalPinjaman: Number(document.getElementById("totalPinjaman").value) || 0,
+      totalBayar: Number(document.getElementById("totalBayar").value) || 0,
+      orderId: document.getElementById("orderId").value || "ORD" + Math.floor(1000 + Math.random() * 9000),
+      tagihan: Number(tagihan),
+      status: document.getElementById("status").value || "Belum Bayar",
+      jatuhTempo: document.getElementById("jatuhTempo").value,
+      kodeVA: document.getElementById("kodeVA").value || "8890" + Math.floor(Math.random() * 99999),
+      waktu: new Date(),
 
-    try {
-      // 1️⃣ Simpan data teks dulu ke Firestore
-      const userRef = await addDoc(collection(db, "users"), {
-        nama,
-        bank: document.getElementById("bank").value,
-        noWa: document.getElementById("noWa").value,
-        va: document.getElementById("nomorVA").value,
-        totalPinjaman: Number(document.getElementById("totalPinjaman").value) || 0,
-        totalBayar: Number(document.getElementById("totalBayar").value) || 0,
-        orderId: document.getElementById("orderId").value || "ORD" + Math.floor(1000 + Math.random() * 9000),
-        tagihan: Number(tagihan),
-        status: document.getElementById("status").value || "Belum Bayar",
-        jatuhTempo: document.getElementById("jatuhTempo").value,
-        kodeVA: document.getElementById("kodeVA").value || "8890" + Math.floor(Math.random() * 99999),
-        waktu: new Date(),
-        ktp: "",
-        selfie: ""
-      });
+      // 🔥 LANGSUNG SIMPAN LINK
+      ktp: document.getElementById("ktp").value,
+      selfie: document.getElementById("selfie").value
+    });
 
-      // 2️⃣ Login Google → dapat access token
-      await loadGapi();
-      const accessToken = await googleLogin();
+    alert("Data berhasil disimpan!");
+    location.reload();
 
-      const folderId = "1CLg7TyHMlhcKL8i6_ufn22xpBgSsJUhQ";
+  } catch (err) {
+    console.error(err);
+    alert("Gagal menyimpan data");
+  }
+};
 
-      // 3️⃣ Upload foto jika ada
-      const ktpURL = ktpFile ? await uploadFileToDrive(ktpFile, folderId, accessToken) : "";
-      const selfieURL = selfieFile ? await uploadFileToDrive(selfieFile, folderId, accessToken) : "";
 
-      // 4️⃣ Update Firestore dengan URL foto
-      await updateDoc(doc(db, "users", userRef.id), { ktp: ktpURL, selfie: selfieURL });
 
-      alert("Data dan foto berhasil disimpan!");
-      location.reload();
 
-    } catch (err) {
-      console.warn("Gagal upload foto, data teks tetap tersimpan:", err);
-      alert("Data teks tersimpan, tapi foto gagal di-upload!");
-    }
-  };
+
+
+
 
 
 
@@ -1369,55 +1561,198 @@ function formatRupiah(angka){
 
 // SIMPAN DATA LOGIN SEMENTARA (hanya JS)
 // buat login global supaya bisa diakses onclick HTML
-window.login = function(){
-  const noWa = document.getElementById("loginNoWa").value.trim();
-  const pass = document.getElementById("loginPass").value.trim();
+// LOGIN ADMIN FIREBASE (VERSI BARU)
+window.loginAdminX = async function(){
 
-  const admins = [
-    { noWa: "1111", password: "1111" },
-    { noWa: "089876543210", password: "pass456" }
-  ];
+  const wa = document.getElementById("inputAdminWaX").value.trim();
+  const pass = document.getElementById("inputAdminPassX").value.trim();
 
-  const user = admins.find(u => u.noWa === noWa && u.password === pass);
-
-  if(user){
-    document.getElementById("loginModal").style.display = "none";
-    showToast("Login berhasil ✅");
-  } else {
-    alert("Nomor WA atau Password salah!");
+  if(!wa || !pass){
+    return alert("Nomor WA & Password wajib diisi!");
   }
-}
+
+  try {
+    const q = query(collection(db, "admins"), where("noWa", "==", wa));
+    const snap = await getDocs(q);
+
+    if(snap.empty){
+      return alert("Akun tidak ditemukan!");
+    }
+
+    const admin = snap.docs[0].data();
+
+    if(admin.password !== pass){
+      return alert("Password salah!");
+    }
+
+    // ✅ LOGIN SUKSES
+    document.getElementById("modalLoginAdminX").style.display = "none";
+    document.querySelector(".sidebar").style.display = "block";
+
+    localStorage.setItem("loginAdminX", "true");
+
+    showToast("Login berhasil ✅");
+
+  } catch(err){
+    console.error(err);
+    alert("Terjadi error login!");
+  }
+};
+
+
+
+document.addEventListener("DOMContentLoaded", function(){
+  document.getElementById("btnAdminLoginX")
+    .addEventListener("click", loginAdminX);
+});
+
+document.addEventListener("DOMContentLoaded", function(){
+
+  const modal = document.getElementById("modalLoginAdminX");
+  const sidebar = document.querySelector(".sidebar");
+
+  if(localStorage.getItem("loginAdminX") === "true"){
+    modal.style.display = "none";
+    sidebar.style.display = "block";
+  } else {
+    modal.style.display = "flex";
+    sidebar.style.display = "none";
+  }
+
+});
 
 // 🔒 Cegah akses ke sidebar / content sebelum login
-document.querySelectorAll(".sidebar button").forEach(btn => {
+function isLoggedIn() {
+  return localStorage.getItem("loginAdminX") === "true";
+
   btn.addEventListener("click", function(e){
-    const modal = document.getElementById("loginModal");
-    if(modal.style.display !== "none"){
+    if(localStorage.getItem("loginAdminX") !== "true"){
       e.preventDefault();
       alert("Harap login dulu!");
     }
   });
-});
+};
 
-document.getElementById("btnLogin").addEventListener("click", function(){
-  const noWa = document.getElementById("loginNoWa").value.trim();
-  const pass = document.getElementById("loginPass").value.trim();
 
-  const admins = [
-    { noWa: "1111", password: "1111" },
-    { noWa: "089876543210", password: "pass456" }
-  ];
+if(localStorage.getItem("adminLogin") === "true"){
+  document.getElementById("loginModal").style.display = "none";
+}
 
-  const user = admins.find(u => u.noWa === noWa && u.password === pass);
 
-  if(user){
-    document.getElementById("loginModal").style.display = "none";
-    showToast("Login berhasil ✅");
+
+
+
+
+
+
+
+
+document.getElementById("btnGantiPassX").onclick = function(){
+  document.getElementById("modalGantiPassX").style.display = "flex";
+};
+
+document.getElementById("btnSubmitPassX").onclick = async function(){
+
+  const noWa = document.getElementById("inputAdminWaX").value.trim();
+  const oldPass = document.getElementById("oldPassX").value.trim();
+  const newPass = document.getElementById("newPassX").value.trim();
+  const confirmPass = document.getElementById("confirmPassX").value.trim();
+
+  if(!noWa || !oldPass || !newPass || !confirmPass){
+    return alert("Semua field wajib diisi!");
+  }
+
+  if(newPass !== confirmPass){
+    return alert("Konfirmasi password tidak cocok!");
+  }
+
+  try {
+    const q = query(collection(db, "admins"), where("noWa", "==", noWa));
+    const snap = await getDocs(q);
+
+    if(snap.empty){
+      return alert("Akun tidak ditemukan!");
+    }
+
+    const docRef = snap.docs[0];
+    const data = docRef.data();
+
+    // cek password lama
+    if(data.password !== oldPass){
+      return alert("Password lama salah!");
+    }
+
+    // update password baru
+    await updateDoc(doc(db, "admins", docRef.id), {
+      password: newPass
+    });
+
+    alert("Password berhasil diganti!");
+
+    document.getElementById("modalGantiPassX").style.display = "none";
+
+  } catch(err){
+    console.error(err);
+    alert("Gagal mengganti password!");
+  }
+};
+
+
+document.getElementById("modalGantiPassX").onclick = function(e){
+  if(e.target.id === "modalGantiPassX"){
+    this.style.display = "none";
+  }
+};
+
+window.togglePassX = function(inputId, imgEl){
+  const input = document.getElementById(inputId);
+
+  if(input.type === "password"){
+    input.type = "text";
+    imgEl.src = "pwd_visible_icon.png"; // 🔥 saat dibuka
   } else {
-    alert("Nomor WA atau Password salah!");
+    input.type = "password";
+    imgEl.src = "pwd_hide_icon.png"; // 🔒 saat ditutup
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+window.logoutAdminX = function () {
+
+  localStorage.removeItem("loginAdminX");
+
+  document.querySelector(".sidebar").style.display = "none";
+  document.getElementById("modalLoginAdminX").style.display = "flex";
+
+  document.getElementById("inputAdminWaX").value = "";
+  document.getElementById("inputAdminPassX").value = "";
+
+  showToast("Logout berhasil 🚪");
+};
+
+
+
+window.addEventListener("load", () => {
+  const isLogin = localStorage.getItem("loginAdminX");
+
+  if(isLogin === "true"){
+    document.getElementById("modalLoginAdminX").style.display = "none";
+    document.querySelector(".sidebar").style.display = "block";
+  } else {
+    document.getElementById("modalLoginAdminX").style.display = "flex";
+    document.querySelector(".sidebar").style.display = "none";
   }
 });
-
 
 
 
