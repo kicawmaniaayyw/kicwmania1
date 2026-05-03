@@ -15,6 +15,14 @@ body {
   font-family: 'Segoe UI', sans-serif;
   
 }
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
 
 
 .top-bar {
@@ -640,22 +648,21 @@ button.logout-btn:active {
   justify-content: center;
   align-items: center;
 
-  min-height: 100vh;
-  min-height: 100dvh;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
 
   background: linear-gradient(135deg, #2e00c5, #6a11cb, #2575fc);
   z-index: 9999;
 
-  padding: 0;
-  margin: 0;
-
-  box-sizing: border-box;
   overflow: hidden;
 ">
   <!-- CARD -->
 <div style="
   width: 100%;
   max-width: 380px;
+  transform: translateY(0);
+max-height: 100vh;
   animation: pop 0.55s ease;
 
   background: rgba(255,255,255,0.15);
