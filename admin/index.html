@@ -9,9 +9,11 @@
 
 <style>
 body {
+  overflow: hidden;
   margin: 0;
   background: #eef2f7;
   font-family: 'Segoe UI', sans-serif;
+  
 }
 
 
@@ -609,7 +611,10 @@ button.logout-btn:active {
 
 
 
-
+@keyframes pop {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
 
 
 
@@ -630,19 +635,28 @@ button.logout-btn:active {
 <div id="modalLoginAdminX" style="
   position: fixed;
   inset: 0;
+
   display: flex;
   justify-content: center;
   align-items: center;
 
+  min-height: 100vh;
+  min-height: 100dvh;
+
   background: linear-gradient(135deg, #2e00c5, #6a11cb, #2575fc);
   z-index: 9999;
-  padding: 20px;
-">
 
+  padding: 0;
+  margin: 0;
+
+  box-sizing: border-box;
+  overflow: hidden;
+">
   <!-- CARD -->
 <div style="
   width: 100%;
   max-width: 380px;
+  animation: pop 0.55s ease;
 
   background: rgba(255,255,255,0.15);
   backdrop-filter: blur(18px);
