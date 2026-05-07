@@ -13,7 +13,10 @@ body {
   background: #eef2f7;
   font-family: 'Segoe UI', sans-serif;
   
+  
 }
+
+
 
 
 .top-bar {
@@ -689,10 +692,100 @@ button.logout-btn:active {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+.popup-hapus{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:99999;
+  backdrop-filter:blur(4px);
+}
+
+.popup-box{
+  width:320px;
+  background:#fff;
+  border-radius:20px;
+  padding:24px;
+  text-align:center;
+  animation:muncul .2s ease;
+  box-shadow:0 10px 35px rgba(0,0,0,0.15);
+}
+
+@keyframes muncul{
+  from{
+    transform:scale(.9);
+    opacity:0;
+  }
+  to{
+    transform:scale(1);
+    opacity:1;
+  }
+}
+
+.icon-hapus{
+  font-size:55px;
+  margin-bottom:10px;
+}
+
+.popup-box h3{
+  margin:0;
+  font-size:22px;
+}
+
+.popup-box p{
+  font-size:14px;
+  color:#666;
+  margin-top:8px;
+}
+
+.popup-btn{
+  display:flex;
+  gap:10px;
+  margin-top:20px;
+}
+
+.popup-btn button{
+  flex:1;
+  border:none;
+  padding:12px;
+  border-radius:12px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.btn-batal{
+  background:#f1f1f1;
+}
+
+.btn-hapus2{
+  background:#ef4444;
+  color:white;
+}
+
+
+
 </style>
 </head>
 
 <body>
+
+
+
+
 <div class="top-bar"></div>
 <!-- LOGIN MODAL -->
 <!-- LOGIN MODAL BARU -->
@@ -949,12 +1042,41 @@ button.logout-btn:active {
         <th>Status</th>
         <th>Jatuh Tempo</th>
         <th>Waktu</th>
+        <th>KTP</th>
+        <th>Selfi</th>
         <th>Aksi</th>
       </tr>
     </thead>
     <tbody id="dataNasabah"></tbody>
   </table>
 </div>
+
+
+
+<!-- POPUP HAPUS -->
+<div id="popupHapus" class="popup-hapus">
+  <div class="popup-box">
+
+    <div class="icon-hapus">🗑️</div>
+
+    <h3>Hapus Data</h3>
+
+    <p>Apakah kamu yakin ingin menghapus data ini?</p>
+
+    <div class="popup-btn">
+      <button class="btn-batal" onclick="tutupPopupHapus()">
+        Batal
+      </button>
+
+      <button class="btn-hapus2" onclick="lanjutHapus()">
+        Ya, Hapus
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
 
 
 <!-- TAGIHAN -->
@@ -1012,6 +1134,7 @@ button.logout-btn:active {
   <label>Link Foto Selfie</label>
   <input type="text" id="selfie" placeholder="https://...">
 </div>
+
   </div>
 
   <button class="btn" onclick="kirimData()">Simpan</button>
@@ -1206,6 +1329,42 @@ const storage = getStorage(app);
 
 
 
+
+
+
+
+window.addEventListener("load", () => {
+
+  const saved = localStorage.getItem("adminLogin");
+
+  if(saved === "true"){
+    const data = JSON.parse(localStorage.getItem("adminData"));
+
+    currentAdmin = data;
+
+    const namaEl = document.getElementById("namaAdmin");
+    if(namaEl){
+      namaEl.textContent = currentAdmin.namaAdmin || "Admin";
+    }
+
+    document.getElementById("modalLoginAdminX").style.display = "none";
+    document.querySelector(".sidebar").style.display = "block";
+  }
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* ================== BASE64 UTF-8 SAFE ================== */
 function encodeBase64(str) {
   return btoa(unescape(encodeURIComponent(str)));
@@ -1378,6 +1537,9 @@ window.kirimData = async () => {
 
   if (!nama || !tagihan) return alert("Isi data wajib!");
 
+    console.log("SELFIE =", document.getElementById("selfie").value);
+
+
   try {
     await addDoc(collection(db, "users"), {
       nama,
@@ -1395,7 +1557,7 @@ window.kirimData = async () => {
 
       // 🔥 LANGSUNG SIMPAN LINK
       ktp: document.getElementById("ktp").value,
-      selfie: document.getElementById("selfie").value
+      swafoto: document.getElementById("selfie").value
     });
 
     alert("Data berhasil disimpan!");
@@ -1468,7 +1630,31 @@ async function loadData(){
   <td class="editable" data-id="${doc.id}" data-field="status">${d.status || "-"}</td>
   <td class="editable" data-id="${doc.id}" data-field="jatuhTempo">${d.jatuhTempo || "-"}</td>
 
+
   <td>${waktu}</td>
+
+  <td>
+  ${d.ktp 
+    ? `<a href="${d.ktp}" target="_blank">
+         <img src="${d.ktp}" style="width:50px;height:50px;object-fit:cover;border-radius:6px;">
+       </a>`
+    : "-"}
+</td>
+
+<td>
+  ${d.swafoto
+    ? `
+      <a href="${d.swafoto}" target="_blank">
+        <img 
+          src="${d.swafoto}" 
+          onerror="this.style.display='none'"
+          style="width:50px;height:50px;object-fit:cover;border-radius:6px;">
+      </a>
+    `
+    : "No"}
+</td>
+
+
 
   <td>
     <button class="btn-hapus" onclick="hapusData('${doc.id}')">Hapus</button>
@@ -1638,14 +1824,37 @@ document.addEventListener("click", function(e){
   });
 });
 
-window.hapusData = async (id)=>{
-  if(!confirm("Yakin mau hapus data ini?")) return;
 
-  await deleteDoc(doc(db,"users",id));
+
+
+let idHapus = null;
+
+window.hapusData = (id) => {
+  idHapus = id;
+  document.getElementById("popupHapus").style.display = "flex";
+};
+
+window.tutupPopupHapus = () => {
+  document.getElementById("popupHapus").style.display = "none";
+};
+
+window.lanjutHapus = async () => {
+
+  if(!idHapus) return;
+
+  await deleteDoc(doc(db, "users", idHapus));
+
+  tutupPopupHapus();
 
   showToast("Data berhasil dihapus 🗑️");
+
   loadData();
 };
+
+
+
+
+
 
 function showToast(msg){
   let t = document.createElement("div");
@@ -1706,6 +1915,20 @@ window.loginAdminX = async function(){
       ...admin
     };
 
+
+localStorage.setItem("adminLogin", "true");
+localStorage.setItem("adminData", JSON.stringify({
+  id: doc.id,
+  namaAdmin: admin.namaAdmin,
+  noWa: admin.noWa
+}));
+
+
+
+
+
+
+
     // ✅ TAMPILKAN NAMA LANGSUNG
     const namaEl = document.getElementById("namaAdmin");
     if(namaEl){
@@ -1725,7 +1948,15 @@ window.loginAdminX = async function(){
 };
 
 
+window.logoutAdminX = function(){
 
+  localStorage.removeItem("adminLogin");
+  localStorage.removeItem("adminData");
+
+  currentAdmin = null;
+
+  location.reload();
+};
 // ========================
 // 🚀 INIT HALAMAN
 // ========================
@@ -1850,10 +2081,6 @@ window.togglePassX = function(inputId, imgEl){
 
 
 
-
-
-
-
 window.logoutAdminX = function () {
 
   localStorage.removeItem("loginAdminX");
@@ -1869,17 +2096,77 @@ window.logoutAdminX = function () {
 
 
 
+
 window.addEventListener("load", () => {
+
   const isLogin = localStorage.getItem("loginAdminX");
 
+  // ======================
+  // AUTO LOGIN ADMIN
+  // ======================
+
   if(isLogin === "true"){
+
     document.getElementById("modalLoginAdminX").style.display = "none";
     document.querySelector(".sidebar").style.display = "block";
-  } else {
+
+  }else{
+
     document.getElementById("modalLoginAdminX").style.display = "flex";
     document.querySelector(".sidebar").style.display = "none";
+
   }
+
+  // ======================
+  // TAMPILKAN APP
+  // ======================
+
+  document.getElementById("adminApp").style.display = "block";
+
+  // ======================
+  // HILANGKAN LOADER
+  // ======================
+
+  const loader = document.getElementById("adminLoader");
+
+  if(loader){
+
+    loader.style.transition = "0.3s";
+    loader.style.opacity = "0";
+
+    setTimeout(()=>{
+      loader.remove();
+    },300);
+
+  }
+
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

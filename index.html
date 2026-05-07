@@ -17,11 +17,13 @@
 body{
   font-family: Arial, sans-serif;
   margin: 0;
+  padding:0;
   padding-bottom: 80px;
   color: #333;
   user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+ 
 
   background: 
     linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), 
@@ -32,9 +34,64 @@ body{
   background-repeat: no-repeat;
 }
 
+
+
+
 html, body {
   touch-action: manipulation;
 }
+
+
+
+/* sembunyikan isi app dulu */
+#mainApp{
+  display:none;
+}
+
+/* loader */
+#appLoader{
+  position:fixed;
+  inset:0;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:999999;
+}
+
+.loader-box{
+  text-align:center;
+  font-family:'Segoe UI',sans-serif;
+}
+
+.spinner{
+  width:55px;
+  height:55px;
+  border:5px solid #ececec;
+  border-top:5px solid #dc2626;
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+  margin:auto;
+}
+
+.loader-box p{
+  margin-top:14px;
+  color:#666;
+  font-size:14px;
+}
+
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+
+
+
+
+
+
 
 .header {
   display: flex;
@@ -722,7 +779,7 @@ html, body {
   padding: 25px;
   border-radius: 12px;
   width: 500px;
-  max-width: 90%;
+  max-width: 80%;
   position: relative;
 
   max-height: 80vh;     /* 🔥 batas tinggi */
@@ -1024,6 +1081,18 @@ img, .logo-admin, .icon {
 </head>
 <body>
 
+<div id="appLoader">
+  <div class="loader-box">
+    <div class="spinner"></div>
+    <p>Memuat aplikasi...</p>
+  </div>
+</div>
+
+
+
+
+
+
 <!-- HEADER -->
 <div class="header">
   <!-- Kiri: logo + teks -->
@@ -1038,12 +1107,18 @@ img, .logo-admin, .icon {
     <div id="dropdownMenu" class="dropdown-menu">
       <div class="menu-item" onclick="showKontak()">Kontak</div>
       <div class="menu-item" onclick="showKetentuan()">Ketentuan & Privasi</div>
-<div class="menu-item" id="menuKeluar" onclick="showKeluar()">Keluar</div>
+
+<div class="menu-item" id="menuKeluar">
+  Keluar
+</div>
     
 
 </div>
   </div>
 </div>
+
+<div id="mainApp"></div>
+
 
 <!-- Modal untuk menampilkan konten profesional -->
 <div id="modalContent" class="modal-content">
@@ -1052,6 +1127,10 @@ img, .logo-admin, .icon {
     <div id="modalBody"></div>
   </div>
 </div>
+
+
+
+
 
 <!-- LOGIN CARD -->
 <div id="loginCard">
@@ -1126,10 +1205,7 @@ img, .logo-admin, .icon {
 
 
 </div>
-  <!-- Footer -->
-<footer id="copyright">
-  © 2026 <span>Rupiah Segar</span> • All Rights Reserved
-</footer>
+
 
 
 <!-- DASHBOARD USER -->
@@ -1413,7 +1489,9 @@ window.loginUser = async function(){
 
    userData = snap.docs[0].data();
 
-    
+    // simpan login
+localStorage.setItem("isLogin", "true");
+localStorage.setItem("userData", JSON.stringify(userData));
     // Hide login, show dashboard
     // Hide login, show dashboard
 document.getElementById("loginCard").style.display="none";
@@ -1498,7 +1576,7 @@ viewer.addEventListener("click", (e) => {
 
 if (userData && ktpImg && selfieImg) {
   ktpImg.src = userData.ktp || "";
-  selfieImg.src = userData.selfie || "";
+  selfieImg.src = userData.swafoto || "";
 }
 
 console.log("DATA USER:", userData);
@@ -1553,7 +1631,6 @@ function closePopup() {
 }
 
 
-    document.body.insertAdjacentHTML('beforeend', popupHTML);
 
     // event listeners
     document.getElementById('closePopupBtn').addEventListener('click', () => {
@@ -1804,7 +1881,7 @@ window.showKetentuan = async function(){
   }
 }
 
-function showModal(htmlContent){
+window.showModal = function(htmlContent){
   document.getElementById("modalBody").innerHTML = htmlContent;
   document.getElementById("modalContent").style.display = "flex";
 }
@@ -1898,8 +1975,34 @@ document.addEventListener("click", function(e){
 });
 
 
+window.logoutAkun = function(){
+
+  // hapus login
+  localStorage.removeItem("isLogin");
+  localStorage.removeItem("userData");
+
+  userData = null;
+
+  // tutup modal
+  closeModal();
+
+  // tampilkan login
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("loginCard").style.display = "block";
 
 
+  // tampilkan footer lagi
+document.getElementById("copyright").style.display = "block";
+
+  // sembunyikan tombol keluar
+  document.getElementById("menuKeluar").style.display = "none";
+
+  // reset input
+  document.getElementById("noWa").value = "";
+
+  console.log("✅ Logout berhasil");
+
+}
 
 // buka popup
 document.getElementById("csbox").addEventListener("click", function(){
@@ -1984,30 +2087,87 @@ document.addEventListener("keydown", function(e){
 
 
 
+document.getElementById("menuKeluar")
+.addEventListener("click", function(e){
+
+  e.preventDefault();
+  e.stopPropagation();
+
+  showKeluar();
+
+});
+
+window.showKeluar = function(){
+
+  // sembunyikan dropdown
+  document.getElementById("dropdownMenu").style.display = "none";
+
+  showModal(`
+    <div style="text-align:center;font-family:sans-serif;padding:10px;">
+      
+      <div style="
+        width:70px;
+        height:70px;
+        background:#fee2e2;
+        border-radius:50%;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        margin:auto;
+        font-size:35px;
+      ">
+        🚪
+      </div>
+
+      <h2 style="margin-top:15px;color:#111;">
+        Keluar Akun
+      </h2>
+
+      <p style="color:#666;font-size:14px;">
+        Apakah Anda yakin ingin keluar?
+      </p>
+
+      <div style="display:flex;gap:10px;margin-top:20px;">
+        
+        <button onclick="closeModal()" style="
+          flex:1;
+          padding:12px;
+          border:none;
+          border-radius:12px;
+          background:#f1f5f9;
+          font-weight:600;
+          cursor:pointer;
+        ">
+          Batal
+        </button>
+
+        <button onclick="logoutAkun()" style="
+          flex:1;
+          padding:12px;
+          border:none;
+          border-radius:12px;
+          background:#dc2626;
+          color:white;
+          font-weight:600;
+          cursor:pointer;
+        ">
+          Keluar
+        </button>
+
+      </div>
+    </div>
+  `);
 
 
-window.showKeluar = function() {
-  userData = null;
 
-  // sembunyikan menu keluar
-  document.getElementById("menuKeluar").style.display = "none";
 
-  // balik ke halaman login
-  document.getElementById("dashboard").style.display = "none";
-  document.getElementById("loginCard").style.display = "block";
+
+
 };
 
 
 
 
-localStorage.setItem("isLogin", "true");
-localStorage.removeItem("isLogin");
-
-window.onload = function(){
-  if(localStorage.getItem("isLogin") === "true"){
-    document.getElementById("menuKeluar").style.display = "block";
-  }
-};
 
 
 
@@ -2022,7 +2182,241 @@ document.addEventListener('dblclick', function (e) {
   e.preventDefault();
 }, { passive: false });
 
+
+
+
+
+
+
+
+window.addEventListener("load", () => {
+
+  const isLogin = localStorage.getItem("isLogin");
+  const savedUser = localStorage.getItem("userData");
+
+  if(isLogin === "true" && savedUser){
+
+    userData = JSON.parse(savedUser);
+
+    // tampilkan dashboard
+    document.getElementById("loginCard").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+    document.getElementById("menuKeluar").style.display = "block";
+    document.getElementById("copyright").style.display = "none";
+
+    // halaman default
+    showPage("pinjaman");
+
+    // ======================
+    // DATA NASABAH
+    // ======================
+
+    document.getElementById("namaNasabah").innerText =
+      userData.nama || "-";
+
+    document.getElementById("orderId").innerText =
+      "Order ID : " + (userData.orderId || "-");
+
+    document.getElementById("totalTagihan").innerText =
+      "IDR " + Number(userData.tagihan || 0).toLocaleString("id-ID");
+
+    document.getElementById("jatuhTempo").innerText =
+      userData.jatuhTempo || "-";
+
+    document.getElementById("bankNasabah").innerText =
+      userData.bank || "-";
+
+    document.getElementById("vaNasabah").innerText =
+      userData.va || "-";
+
+      // TOTAL BAYAR
+const totalBayarEl = document.getElementById("totalBayar");
+
+if(totalBayarEl && totalBayarEl.childNodes.length > 0){
+
+  totalBayarEl.childNodes[0].textContent =
+    "Rp " + Number(userData.totalBayar || 0)
+      .toLocaleString("id-ID");
+
+}
+
+
+
+      // ======================
+// POPUP PEMBAYARAN
+// ======================
+
+// Nama
+const popupNama = document.getElementById("popupNama");
+
+if(popupNama){
+  popupNama.value = userData.nama || "-";
+}
+
+// Bank
+const popupBank = document.getElementById("popupBank");
+
+if(popupBank){
+  popupBank.value = userData.bank || "-";
+}
+
+// Tagihan
+const popupTagihan = document.getElementById("popupTagihan");
+
+if(popupTagihan){
+  popupTagihan.value =
+    "IDR " + Number(userData.tagihan || 0)
+    .toLocaleString("id-ID");
+}
+
+// Kode VA
+const popupKodeVA = document.getElementById("popupKodeVA");
+
+if(popupKodeVA){
+  popupKodeVA.textContent = userData.kodeVA || "-";
+}
+
+
+
+    // ======================
+    // STATUS TAGIHAN
+    // ======================
+
+    const statusEl = document.getElementById("statusTagihan");
+
+    if(statusEl){
+
+      statusEl.innerText = userData.status || "Belum Bayar";
+
+      statusEl.classList.remove("status-belum", "status-bayar");
+
+      if(userData.status === "Lunas"){
+        statusEl.classList.add("status-bayar");
+      }else{
+        statusEl.classList.add("status-belum");
+      }
+
+    }
+
+    // ======================
+    // DATA PINJAMAN
+    // ======================
+
+    const jumlahPinjaman =
+      document.getElementById("jumlahPinjaman");
+
+    if(jumlahPinjaman){
+      jumlahPinjaman.innerText =
+        userData.totalPinjaman
+        ? "IDR " + Number(userData.totalPinjaman)
+            .toLocaleString("id-ID")
+        : "IDR 0";
+    }
+
+    const jatuhTempoPinjaman =
+      document.getElementById("jatuhTempoPinjaman");
+
+    if(jatuhTempoPinjaman){
+      jatuhTempoPinjaman.innerText =
+        userData.jatuhTempo || "-";
+    }
+
+    // ======================
+    // FOTO
+    // ======================
+
+    const ktpImg = document.getElementById("ktpImg");
+    const selfieImg = document.getElementById("selfieImg");
+
+    if(ktpImg){
+      ktpImg.src = userData.ktp || "";
+    }
+
+    if(selfieImg){
+      selfieImg.src = userData.swafoto || "";
+    }
+
+
+    const viewer = document.getElementById("imageViewer");
+const viewerImg = document.getElementById("viewerImg");
+const closeBtn = document.querySelector(".close-viewer");
+
+// tombol close
+if(closeBtn){
+  closeBtn.onclick = () => {
+    viewer.style.display = "none";
+  };
+}
+
+// klik luar gambar = close
+if(viewer){
+  viewer.onclick = (e) => {
+    if(e.target === viewer){
+      viewer.style.display = "none";
+    }
+  };
+}
+
+// fungsi buka gambar
+function showImage(src){
+  if(viewer && viewerImg){
+    viewer.style.display = "flex";
+    viewerImg.src = src;
+  }
+}
+
+// klik KTP
+if(ktpImg){
+  ktpImg.onclick = () => {
+    showImage(ktpImg.src);
+  };
+}
+
+// klik Selfie
+if(selfieImg){
+  selfieImg.onclick = () => {
+    showImage(selfieImg.src);
+  };
+}
+
+
+
+
+
+    console.log("✅ Auto login berhasil");
+
+  }
+
+    // 🔥 tampilkan halaman setelah selesai cek login
+  document.body.style.visibility = "visible";
+
+// tampilkan halaman
+document.body.style.visibility = "visible";
+
+// hilangkan loader
+const loader = document.getElementById("appLoader");
+
+if(loader){
+  loader.style.opacity = "0";
+
+  setTimeout(()=>{
+    loader.remove();
+  },300);
+}
+});
+
+
+
+
+
 </script>
 <script src="script.js"></script>
+
+
+  <!-- Footer -->
+<footer id="copyright">
+  © 2026 <span>Rupiah Segar</span> • All Rights Reserved
+</footer>
+</div>
 </body>
 </html>
