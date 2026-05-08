@@ -120,8 +120,20 @@ html, body {
 
 
 
+ /* cek tagihan & pembayaran */
+.logo-desc{
+  font-size: 11px;
 
+  color: #ffd6d6;
 
+  font-weight: 500;
+
+  margin-top: 2px;
+
+  letter-spacing: 0.3px;
+
+  opacity: 0.9;
+}
 
 
 .header {
@@ -296,15 +308,36 @@ html, body {
   z-index: 1000;
 }
 
-.modal-inner {
-  background: #fff;
+.modal-inner{
+  background:
+    linear-gradient(
+      rgba(255,255,255,0.92),
+      rgba(255,255,255,0.92)
+    ),
+    url("global_map.png");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
   padding: 25px;
-  border-radius: 12px;
+
+  border-radius: 18px;
+    max-height: 80vh;     /* 🔥 batas tinggi */
+  overflow-y: auto;     /* 🔥 aktifkan scroll */
+
   width: 500px;
   max-width: 90%;
-  position: relative;
-}
 
+  position: relative;
+
+  box-shadow:
+    0 10px 35px rgba(0,0,0,0.18);
+
+  border: 1px solid rgba(255,255,255,0.6);
+
+  backdrop-filter: blur(6px);
+}
 .modal-inner .close {
   position: absolute;
   top:10px;
@@ -427,40 +460,69 @@ html, body {
 /* KTP BOX */
 /* Container 2 foto */
 /* Container 2 foto */
+/* Container 2 foto */
 .ktp-container{
-  display: flex;
-  justify-content: space-between;
-  gap: 10px; /* jarak antar box */
-  margin-bottom: 15px;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:15px;
 }
 
 /* KTP BOX */
 .ktp-box{
   background:#f5f5f5;
   border:2px dashed #ddd;
-  border-radius:10px;
-  padding:10px;
-  flex: 1; /* tiap box ambil proporsi sama */
-  display: flex;
-  justify-content: center; /* supaya konten di tengah box */
-  align-items: center;
+  border-radius:12px;
+  padding:12px;
+  flex:1;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
 /* Konten gambar + label */
 .ktp-content{
-  text-align: center;
+  width:100%;
+
+  display:flex;
+  flex-direction:column;
+
+  align-items:center;
+
+  text-align:center;
 }
 
 /* Foto */
 .ktp-img{
   width:100%;
-  max-width:150px; /* agar tidak terlalu besar */
-  height:auto;
-  object-fit:contain;
-  border-radius:6px;
-  margin-bottom:5px; /* jarak ke label */
+  max-width:150px;
+
+  height:110px; /* tinggi dibuat sama */
+
+  object-fit:cover; /* biar rapi */
+
+  border-radius:8px;
+
+  border:1px solid #ddd;
+
+  background:#fff;
+
+  margin-bottom:8px;
 }
 
+/* Text label */
+.ktp-content p{
+  margin:0;
+
+  font-size:14px;
+
+  font-weight:600;
+
+  color:#444;
+
+  min-height:20px; /* posisi teks tetap sejajar */
+}
 
 /* ===============================
    VALUE APP PREMIUM
@@ -721,7 +783,12 @@ html, body {
    CONTENT POPUP
 =============================== */
 .popup-content{
-  background: white;
+    background:
+    linear-gradient(rgba(255, 255, 255, 0.92), rgb(143 186 220 / 92%)), url(global_map.png);
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
   width: 90%;
   max-width: 350px;
@@ -1287,17 +1354,6 @@ html, body {
 
 
 
-.modal-inner {
-  background: #fff;
-  padding: 25px;
-  border-radius: 12px;
-  width: 500px;
-  max-width: 80%;
-  position: relative;
-
-  max-height: 80vh;     /* 🔥 batas tinggi */
-  overflow-y: auto;     /* 🔥 aktifkan scroll */
-}
 
 /* Scroll lebih halus */
 .modal-inner::-webkit-scrollbar {
@@ -1692,17 +1748,29 @@ img, .logo-admin, .icon {
 
 <!-- HEADER -->
 <div class="header">
+
   <!-- Kiri: logo + teks -->
   <div class="header-left">
+
     <img src="Rupiah segar.jpg" class="logo">
-    <span class="logo-text">Rupiah Segar</span>
+
+    <div class="logo-area">
+
+      <span class="logo-text">Rupiah Segar</span>
+
+      <div class="logo-desc">
+        Cek Tagihan & Pembayaran
+      </div>
+
+    </div>
+
   </div>
 
   <!-- Kanan: logo menu dengan dropdown -->
   <div class="header-right">
     <img src="country_filter_icon.png" class="logo-menu" onclick="toggleMenu()">
     <div id="dropdownMenu" class="dropdown-menu">
-      <div class="menu-item" onclick="showKontak()">Kontak</div>
+      <div class="menu-item" onclick="showKontak()">Kontak Bantuan</div>
       <div class="menu-item" onclick="showKetentuan()">Ketentuan & Privasi</div>
 
 <div class="menu-item" id="menuKeluar">
@@ -1879,13 +1947,13 @@ img, .logo-admin, .icon {
   <div class="ktp-box">
     <div class="ktp-content">
       <img id="ktpImg" class="ktp-img" src="bdi.png" alt="Foto KTP">
-      <p>KTP</p>
+      <p>Dokumen KTP</p>
     </div>
   </div>
   <div class="ktp-box">
     <div class="ktp-content">
       <img id="selfieImg" class="ktp-img" src="abk.png" alt="Foto Selfie">
-      <p>Selfie</p>
+      <p>Verifikasi Wajah</p>
     </div>
   </div>
 </div>
@@ -1926,9 +1994,93 @@ img, .logo-admin, .icon {
       </div>
     </div>
   </div>
+
+  
+
+
+  
 </div>
 
+<div style="
+  margin:18px auto 0 auto;
+  padding:16px 18px;
+  width:92%;
+  max-width:340px;
 
+  border-radius:14px;
+
+  background:linear-gradient(135deg,#f8fafc,#ffffff);
+
+  border:1px solid #e5e7eb;
+
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+">
+
+  <div style="
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+  ">
+
+    <!-- ICON PNG -->
+    <div style="
+      width:42px;
+      height:42px;
+      min-width:42px;
+
+      border-radius:12px;
+
+      background:#ffffff;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      box-shadow:0 4px 10px rgba(0,0,0,0.08);
+
+      border:1px solid #e5e7eb;
+    ">
+
+      <img 
+        src="bdn.png" 
+        alt="Security"
+        style="
+          width:24px;
+          height:24px;
+          object-fit:contain;
+        "
+      >
+
+    </div>
+
+    <!-- TEXT -->
+    <div>
+
+      <div style="
+        font-size:15px;
+        font-weight:700;
+        color:#111827;
+        margin-bottom:8px;
+      ">
+        Keamanan & Perlindungan Data
+      </div>
+
+      <p style="
+        margin:0;
+        color:#4b5563;
+        font-size:13px;
+        line-height:1.8;
+        text-align:left;
+      ">
+        Seluruh data pengguna diproses secara aman dan hanya digunakan
+        untuk kebutuhan verifikasi layanan sesuai kebijakan privasi yang berlaku.
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
 
 
   <!-- POPUP BAYAR -->
@@ -2359,62 +2511,155 @@ window.showKontak = function () {
 <div style="
   font-family:'Segoe UI',sans-serif;
   color:#333;
-  max-width:400px;
+  max-width:420px;
   margin:0 auto;
 ">
 
-  <h2 style="
-    color:#e90e0e;
-    margin-bottom:15px;
+  <!-- HEADER -->
+  <div style="
     text-align:center;
+    margin-bottom:22px;
   ">
-    Kontak Kami
-  </h2>
 
-  <p style="
-    font-size:14px;
-    color:#555;
-    text-align:center;
-    margin-bottom:20px;
+    <div style="
+      width:72px;
+      height:72px;
+      margin:0 auto 12px auto;
+
+      border-radius:22px;
+
+      background:linear-gradient(135deg,#ffffff,#f8fafc);
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      box-shadow:0 8px 22px rgba(177,8,8,0.15);
+
+      border:1px solid #eee;
+    ">
+
+      <img src="cs.png" style="
+        width:42px;
+        height:42px;
+        object-fit:contain;
+      ">
+
+    </div>
+
+    <h2 style="
+      color:#b10808;
+      margin:0;
+      font-size:24px;
+      font-weight:700;
+      letter-spacing:0.3px;
+    ">
+      Pusat Bantuan
+    </h2>
+
+    <p style="
+      font-size:14px;
+      color:#6b7280;
+      margin-top:10px;
+      line-height:1.7;
+    ">
+      Tim layanan pelanggan Rupiah Segar siap membantu
+      kebutuhan informasi dan kendala pengguna secara profesional.
+    </p>
+
+  </div>
+
+  <!-- LIST -->
+  <div style="
+    display:grid;
+    gap:14px;
   ">
-    Kami siap membantu Anda 24 jam untuk semua kebutuhan layanan Rupiah Segar.
-  </p>
-
-  <div style="display:grid; gap:12px;">
 
     <!-- EMAIL -->
     <div style="
       display:flex;
       align-items:center;
-      padding:15px;
-      background:#f8fafc;
-      border-radius:12px;
-      box-shadow:0 4px 12px rgba(0,0,0,0.08);
+
+      padding:16px;
+
+      background:linear-gradient(135deg,#ffffff,#f8fafc);
+
+      border-radius:18px;
+
+      border:1px solid #e5e7eb;
+
+      box-shadow:0 5px 16px rgba(0,0,0,0.05);
     ">
 
-      <span style="
-        font-size:20px;
-        margin-right:10px;
+      <!-- ICON -->
+      <div style="
+        width:50px;
+        height:50px;
+        min-width:50px;
+
+        border-radius:16px;
+
+        background:#fff;
+
+        display:flex;
+        align-items:center;
+        justify-content:center;
+
+        margin-right:14px;
+
+        box-shadow:0 4px 12px rgba(0,0,0,0.06);
       ">
-        📧
-      </span>
 
-      <div style="flex:1;">
-        <b>Email Support</b><br>
+        <img src="gmail.png" style="
+          width:24px;
+          height:24px;
+          object-fit:contain;
+        ">
 
-        <span style="color:#7f5c5c;">
-          ${data.email || "-"}
-        </span>
       </div>
 
+      <!-- TEXT -->
+      <div style="flex:1;">
+
+        <div style="
+          font-size:15px;
+          font-weight:700;
+          color:#111827;
+          margin-bottom:4px;
+        ">
+          Email Support
+        </div>
+
+        <div style="
+          color:#6b7280;
+          font-size:13px;
+          line-height:1.6;
+          word-break:break-word;
+        ">
+          ${data.email || "-"}
+        </div>
+
+      </div>
+
+      <!-- BUTTON -->
       <button style="
-        background:#a7a7a7;
+        background:linear-gradient(135deg,#b10808,#e11d1d);
+
         color:white;
+
         border:none;
-        padding:5px 10px;
-        border-radius:6px;
+
+        padding:8px 14px;
+
+        border-radius:10px;
+
         cursor:pointer;
+
         font-size:12px;
+
+        font-weight:600;
+
+        box-shadow:0 4px 12px rgba(177,8,8,0.25);
       "
 
       onclick="
@@ -2426,10 +2671,8 @@ window.showKontak = function () {
             <span>Email berhasil disalin</span>
           </div>
         \`);
-      "
-
-      >
-        Copy
+      ">
+        Salin
       </button>
 
     </div>
@@ -2438,35 +2681,86 @@ window.showKontak = function () {
     <div style="
       display:flex;
       align-items:center;
-      padding:15px;
-      background:#f8fafc;
-      border-radius:12px;
-      box-shadow:0 4px 12px rgba(0,0,0,0.08);
+
+      padding:16px;
+
+      background:linear-gradient(135deg,#ffffff,#f8fafc);
+
+      border-radius:18px;
+
+      border:1px solid #e5e7eb;
+
+      box-shadow:0 5px 16px rgba(0,0,0,0.05);
     ">
 
-      <span style="
-        font-size:20px;
-        margin-right:10px;
+      <!-- ICON -->
+      <div style="
+        width:50px;
+        height:50px;
+        min-width:50px;
+
+        border-radius:16px;
+
+        background:#fff;
+
+        display:flex;
+        align-items:center;
+        justify-content:center;
+
+        margin-right:14px;
+
+        box-shadow:0 4px 12px rgba(0,0,0,0.06);
       ">
-        📱
-      </span>
 
-      <div style="flex:1;">
-        <b>WhatsApp</b><br>
+        <img src="whatsapp.png" style="
+          width:24px;
+          height:24px;
+          object-fit:contain;
+        ">
 
-        <span style="color:#7f5c5c;">
-          ${data.wa || "-"}
-        </span>
       </div>
 
+      <!-- TEXT -->
+      <div style="flex:1;">
+
+        <div style="
+          font-size:15px;
+          font-weight:700;
+          color:#111827;
+          margin-bottom:4px;
+        ">
+          WhatsApp Support
+        </div>
+
+        <div style="
+          color:#6b7280;
+          font-size:13px;
+          line-height:1.6;
+        ">
+          ${data.wa || "-"}
+        </div>
+
+      </div>
+
+      <!-- BUTTON -->
       <button style="
-        background:#a7a7a7;
+        background:linear-gradient(135deg,#16a34a,#15803d);
+
         color:white;
+
         border:none;
-        padding:5px 10px;
-        border-radius:6px;
+
+        padding:8px 14px;
+
+        border-radius:10px;
+
         cursor:pointer;
+
         font-size:12px;
+
+        font-weight:600;
+
+        box-shadow:0 4px 12px rgba(22,163,74,0.25);
       "
 
       onclick="
@@ -2478,53 +2772,108 @@ window.showKontak = function () {
             <span>Nomor WhatsApp berhasil disalin</span>
           </div>
         \`);
-      "
-
-      >
-        Copy
+      ">
+        Salin
       </button>
 
     </div>
 
-    <!-- JAM OPERASIONAL -->
+    <!-- JAM -->
     <div style="
       display:flex;
       align-items:center;
-      padding:15px;
-      background:#f8fafc;
-      border-radius:12px;
-      box-shadow:0 4px 12px rgba(0,0,0,0.08);
+
+      padding:16px;
+
+      background:linear-gradient(135deg,#ffffff,#f8fafc);
+
+      border-radius:18px;
+
+      border:1px solid #e5e7eb;
+
+      box-shadow:0 5px 16px rgba(0,0,0,0.05);
     ">
 
-      <span style="
-        font-size:20px;
-        margin-right:10px;
+      <!-- ICON -->
+      <div style="
+        width:50px;
+        height:50px;
+        min-width:50px;
+
+        border-radius:16px;
+
+        background:#fff;
+
+        display:flex;
+        align-items:center;
+        justify-content:center;
+
+        margin-right:14px;
+
+        box-shadow:0 4px 12px rgba(0,0,0,0.06);
       ">
-        ⏰
-      </span>
 
-      <div style="flex:1;">
-        <b>Jam Operasional</b><br>
+        <img src="24-hours-support.png" style="
+          width:24px;
+          height:24px;
+          object-fit:contain;
+        ">
 
-        <span style="color:#7f5c5c;">
+      </div>
+
+      <!-- TEXT -->
+      <div>
+
+        <div style="
+          font-size:15px;
+          font-weight:700;
+          color:#111827;
+          margin-bottom:4px;
+        ">
+          Jam Operasional
+        </div>
+
+        <div style="
+          color:#6b7280;
+          font-size:13px;
+          line-height:1.6;
+        ">
           ${data.jam || "-"}
-        </span>
+        </div>
+
       </div>
 
     </div>
 
   </div>
 
+  <!-- FOOTER -->
   <div style="
     margin-top:20px;
-    padding:15px;
-    background:#e0f2fe;
-    border-radius:10px;
+
+    padding:16px;
+
+    background:linear-gradient(135deg,#eff6ff,#ffffff);
+
+    border:1px solid #dbeafe;
+
+    border-radius:16px;
+
     font-size:13px;
-    color:#0369a1;
+
+    color:#1e40af;
+
     text-align:center;
+
+    line-height:1.8;
+
+    box-shadow:0 4px 12px rgba(0,0,0,0.04);
   ">
-    Menggunakan layanan, Anda telah menyetujui Kebijakan Privasi kami.
+
+    Dengan menggunakan layanan Rupiah Segar,
+    pengguna dianggap telah membaca dan menyetujui
+    kebijakan privasi serta ketentuan layanan yang berlaku.
+
   </div>
 
 </div>
@@ -2567,48 +2916,671 @@ window.showKetentuan = async function(){
 
         <hr style="margin:15px 0;">
 
-        <h3 style="color:#111;">Pendahuluan</h3>
-        <p>
-          Dalam rangka meningkatkan kualitas layanan, <b>Rupiah Segar</b> berkomitmen untuk melindungi 
-          dan menjaga kerahasiaan data pribadi pengguna. Kebijakan ini menjelaskan bagaimana kami 
-          mengumpulkan, menggunakan, dan melindungi informasi Anda saat menggunakan layanan kami.
-        </p>
+<div style="
+  margin-top:20px;
+  padding:22px;
+  background:linear-gradient(135deg,#ffffff,#f8fafc);
+  border:1px solid #e5e7eb;
+  border-radius:18px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+">
 
-        <h3 style="color:#111;">Pengumpulan Data</h3>
-        <p>Kami dapat mengumpulkan beberapa informasi berikut:</p>
-        <ul style="padding-left:18px;">
-          <li>Data identitas (nama, nomor HP, dll)</li>
-          <li>Data transaksi dan aktivitas pengguna</li>
-          <li>Informasi perangkat dan akses sistem</li>
-        </ul>
+  <!-- HEADER -->
+  <div style="
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:16px;
+  ">
 
-        <h3 style="color:#111;">Penggunaan Data</h3>
-        <p>Data yang dikumpulkan digunakan untuk:</p>
-        <ul style="padding-left:18px;">
-          <li>Memproses layanan dan transaksi</li>
-          <li>Meningkatkan kualitas sistem dan keamanan</li>
-          <li>Memberikan informasi terkait layanan</li>
-        </ul>
+    <div style="
+      width:44px;
+      height:44px;
+      border-radius:14px;
+      background:linear-gradient(135deg,#b10808,#ff3b3b);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-size:20px;
+      box-shadow:0 4px 12px rgba(177,8,8,0.35);
+    ">
+      📄
+    </div>
 
-        <h3 style="color:#111;">Keamanan Data</h3>
-        <p>
-          Rupiah Segar menggunakan sistem keamanan berlapis untuk menjaga data pengguna agar tetap aman 
-          dari akses yang tidak sah, perubahan, atau penyalahgunaan.
-        </p>
+    <div>
+      <h3 style="
+        margin:0;
+        color:#111827;
+        font-size:18px;
+        font-weight:700;
+      ">
+        Pendahuluan
+      </h3>
 
-        <h3 style="color:#111;">Pihak Ketiga</h3>
-        <p>
-          Dalam beberapa kondisi, kami dapat bekerja sama dengan pihak ketiga untuk mendukung layanan. 
-          Namun, kami memastikan bahwa setiap pihak tetap menjaga kerahasiaan data pengguna.
-        </p>
+      <div style="
+        font-size:12px;
+        color:#6b7280;
+        margin-top:3px;
+      ">
+        Komitmen perlindungan privasi dan keamanan data pengguna
+      </div>
+    </div>
 
-        <h3 style="color:#111;">Hak Pengguna</h3>
-        <p>Pengguna memiliki hak untuk:</p>
-        <ul style="padding-left:18px;">
-          <li>Mengakses dan memperbarui data pribadi</li>
-          <li>Meminta penghapusan data</li>
-          <li>Menghentikan penggunaan layanan</li>
-        </ul>
+  </div>
+
+  <!-- CONTENT -->
+  <div style="
+    background:#fff;
+    padding:16px;
+    border-radius:14px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.05);
+  ">
+
+  <p style="
+  margin:0;
+  color:#4b5563;
+  font-size:14px;
+  line-height:1.8;
+  text-align:left;
+">
+Dalam rangka meningkatkan kualitas layanan, <b style="color:#b10808;">Rupiah Segar</b> berkomitmen untuk melindungi serta menjaga kerahasiaan data pribadi setiap pengguna. Kebijakan ini menjelaskan bagaimana kami mengumpulkan, menggunakan, menyimpan, dan melindungi informasi pengguna selama menggunakan layanan kami.
+
+<br><br>
+
+Dengan menggunakan layanan <b style="color:#b10808;">Rupiah Segar</b>, pengguna dianggap telah membaca, memahami, dan menyetujui kebijakan privasi serta syarat layanan yang berlaku demi menciptakan keamanan dan kenyamanan bersama.
+</p>
+
+  </div>
+
+</div>
+
+       <!-- PENGUMPULAN DATA -->
+<div style="
+  margin-top:20px;
+  padding:20px;
+  background:linear-gradient(135deg,#ffffff,#f8fafc);
+  border:1px solid #e5e7eb;
+  border-radius:18px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+">
+
+  <!-- HEADER -->
+  <div style="
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:16px;
+  ">
+
+    <div style="
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      background:linear-gradient(135deg,#2563eb,#1d4ed8);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-size:20px;
+      box-shadow:0 4px 12px rgba(37,99,235,0.3);
+    ">
+      📂
+    </div>
+
+    <div>
+      <h3 style="
+        margin:0;
+        color:#111827;
+        font-size:18px;
+        font-weight:700;
+      ">
+        Pengumpulan Data
+      </h3>
+
+      <div style="
+        font-size:12px;
+        color:#6b7280;
+        margin-top:3px;
+      ">
+        Informasi yang diperlukan untuk mendukung layanan
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CONTENT -->
+  <div style="display:grid; gap:12px;">
+
+    <div style="
+      display:flex;
+      gap:12px;
+      padding:14px;
+      background:#fff;
+      border-radius:14px;
+      box-shadow:0 3px 10px rgba(0,0,0,0.05);
+    ">
+      <div style="
+        min-width:34px;
+        height:34px;
+        border-radius:10px;
+        background:#dbeafe;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+      ">
+        👤
+      </div>
+
+      <div>
+        <div style="
+          font-size:14px;
+          font-weight:700;
+          color:#111827;
+          margin-bottom:4px;
+        ">
+          Data Identitas
+        </div>
+
+        <div style="
+          font-size:13px;
+          color:#6b7280;
+          line-height:1.7;
+        ">
+          Nama, nomor HP, dan informasi identitas lain yang dibutuhkan untuk verifikasi layanan.
+        </div>
+      </div>
+    </div>
+
+    <div style="
+      display:flex;
+      gap:12px;
+      padding:14px;
+      background:#fff;
+      border-radius:14px;
+      box-shadow:0 3px 10px rgba(0,0,0,0.05);
+    ">
+      <div style="
+        min-width:34px;
+        height:34px;
+        border-radius:10px;
+        background:#dcfce7;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+      ">
+        💳
+      </div>
+
+      <div>
+        <div style="
+          font-size:14px;
+          font-weight:700;
+          color:#111827;
+          margin-bottom:4px;
+        ">
+          Aktivitas & Transaksi
+        </div>
+
+        <div style="
+          font-size:13px;
+          color:#6b7280;
+          line-height:1.7;
+        ">
+          Riwayat transaksi dan aktivitas pengguna digunakan untuk meningkatkan kualitas layanan.
+        </div>
+      </div>
+    </div>
+
+    <div style="
+      display:flex;
+      gap:12px;
+      padding:14px;
+      background:#fff;
+      border-radius:14px;
+      box-shadow:0 3px 10px rgba(0,0,0,0.05);
+    ">
+      <div style="
+        min-width:34px;
+        height:34px;
+        border-radius:10px;
+        background:#fee2e2;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+      ">
+        📱
+      </div>
+
+      <div>
+        <div style="
+          font-size:14px;
+          font-weight:700;
+          color:#111827;
+          margin-bottom:4px;
+        ">
+          Informasi Perangkat
+        </div>
+
+        <div style="
+          font-size:13px;
+          color:#6b7280;
+          line-height:1.7;
+        ">
+          Informasi perangkat dan akses sistem digunakan demi keamanan dan stabilitas layanan.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- PENGGUNAAN DATA -->
+<div style="
+  margin-top:20px;
+  padding:20px;
+  background:linear-gradient(135deg,#ffffff,#f8fafc);
+  border:1px solid #e5e7eb;
+  border-radius:18px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+">
+
+  <div style="
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:16px;
+  ">
+
+    <div style="
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      background:linear-gradient(135deg,#f59e0b,#d97706);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-size:20px;
+      box-shadow:0 4px 12px rgba(245,158,11,0.3);
+    ">
+      ⚙
+    </div>
+
+    <div>
+      <h3 style="
+        margin:0;
+        color:#111827;
+        font-size:18px;
+        font-weight:700;
+      ">
+        Penggunaan Data
+      </h3>
+
+      <div style="
+        font-size:12px;
+        color:#6b7280;
+        margin-top:3px;
+      ">
+        Pemanfaatan data untuk mendukung kualitas layanan
+      </div>
+    </div>
+
+  </div>
+
+  <div style="
+    font-size:14px;
+    color:#4b5563;
+    line-height:1.8;
+  ">
+    Data yang dikumpulkan digunakan untuk memproses layanan dan transaksi,
+    meningkatkan kualitas sistem serta keamanan, dan memberikan informasi terkait layanan kepada pengguna.
+  </div>
+
+</div>
+
+<!-- KEAMANAN DATA -->
+<div style="
+  margin-top:20px;
+  padding:20px;
+  background:linear-gradient(135deg,#ffffff,#f8fafc);
+  border:1px solid #e5e7eb;
+  border-radius:18px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+">
+
+  <div style="
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:16px;
+  ">
+
+    <div style="
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      background:linear-gradient(135deg,#16a34a,#15803d);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-size:20px;
+      box-shadow:0 4px 12px rgba(22,163,74,0.3);
+    ">
+      🔒
+    </div>
+
+    <div>
+      <h3 style="
+        margin:0;
+        color:#111827;
+        font-size:18px;
+        font-weight:700;
+      ">
+        Keamanan Data
+      </h3>
+
+      <div style="
+        font-size:12px;
+        color:#6b7280;
+        margin-top:3px;
+      ">
+        Perlindungan berlapis terhadap data pengguna
+      </div>
+    </div>
+
+  </div>
+
+  <div style="
+    font-size:14px;
+    color:#4b5563;
+    line-height:1.8;
+  ">
+    Rupiah Segar menggunakan sistem keamanan berlapis untuk menjaga data pengguna
+    tetap aman dari akses tidak sah, perubahan, maupun penyalahgunaan data.
+  </div>
+
+</div>
+
+<!-- PIHAK KETIGA -->
+<div style="
+  margin-top:20px;
+  padding:20px;
+  background:linear-gradient(135deg,#ffffff,#f8fafc);
+  border:1px solid #e5e7eb;
+  border-radius:18px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+">
+
+  <div style="
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:16px;
+  ">
+
+    <div style="
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      background:linear-gradient(135deg,#9333ea,#7e22ce);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-size:20px;
+      box-shadow:0 4px 12px rgba(147,51,234,0.3);
+    ">
+      🤝
+    </div>
+
+    <div>
+      <h3 style="
+        margin:0;
+        color:#111827;
+        font-size:18px;
+        font-weight:700;
+      ">
+        Pihak Ketiga
+      </h3>
+
+      <div style="
+        font-size:12px;
+        color:#6b7280;
+        margin-top:3px;
+      ">
+        Kerja sama layanan dengan tetap menjaga privasi pengguna
+      </div>
+    </div>
+
+  </div>
+
+  <div style="
+    font-size:14px;
+    color:#4b5563;
+    line-height:1.8;
+  ">
+    Dalam beberapa kondisi, kami dapat bekerja sama dengan pihak ketiga untuk mendukung layanan.
+    Namun, setiap pihak tetap diwajibkan menjaga keamanan dan kerahasiaan data pengguna sesuai kebijakan yang berlaku.
+  </div>
+
+</div>
+
+
+
+
+
+
+<!-- DESKRIPSI -->
+<div style="
+  margin-bottom:18px;
+  padding:18px;
+  background:linear-gradient(135deg,#ffffff,#f8fafc);
+  border:1px solid #e5e7eb;
+  border-radius:16px;
+  box-shadow:0 5px 14px rgba(0,0,0,0.06);
+">
+
+  <div style="
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+  ">
+
+    <!-- ICON -->
+    <div style="
+      min-width:42px;
+      height:42px;
+      border-radius:14px;
+      background:linear-gradient(135deg,#b10808,#ff3b3b);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-size:20px;
+      box-shadow:0 4px 12px rgba(177,8,8,0.25);
+    ">
+      🛡
+    </div>
+
+
+    <!-- TEXT -->
+    <div>
+
+      <div style="
+        font-size:16px;
+        font-weight:700;
+        color:#111827;
+        margin-bottom:6px;
+      ">
+        Perlindungan Privasi Pengguna
+      </div>
+
+      <p style="
+        margin:0;
+        color:#4b5563;
+        font-size:14px;
+        line-height:1.9;
+        text-align:left;
+      ">
+        <b style="color:#b10808;">Rupiah Segar</b> berkomitmen untuk menghormati
+        privasi serta melindungi hak setiap pengguna dalam menggunakan layanan kami.
+        Pengguna memiliki hak penuh untuk mengelola informasi dan aktivitas akun
+        secara aman, transparan, dan sesuai dengan kebijakan yang berlaku.
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
+  <!-- LIST -->
+  <div style="
+    display:grid;
+    gap:12px;
+  ">
+
+    <!-- ITEM -->
+    <div style="
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      padding:14px;
+      background:#fff;
+      border-radius:14px;
+      box-shadow:0 3px 10px rgba(0,0,0,0.05);
+    ">
+      <div style="
+        min-width:34px;
+        height:34px;
+        border-radius:10px;
+        background:#dcfce7;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:16px;
+      ">
+        👤
+      </div>
+
+      <div>
+        <div style="
+          font-size:14px;
+          font-weight:700;
+          color:#111827;
+          margin-bottom:3px;
+        ">
+          Akses & Perbarui Data
+        </div>
+
+        <div style="
+          font-size:13px;
+          color:#6b7280;
+          line-height:1.6;
+        ">
+          Pengguna dapat melihat dan memperbarui informasi pribadi kapan saja.
+        </div>
+      </div>
+    </div>
+
+    <!-- ITEM -->
+    <div style="
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      padding:14px;
+      background:#fff;
+      border-radius:14px;
+      box-shadow:0 3px 10px rgba(0,0,0,0.05);
+    ">
+      <div style="
+        min-width:34px;
+        height:34px;
+        border-radius:10px;
+        background:#fee2e2;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:16px;
+      ">
+        🗑
+      </div>
+
+      <div>
+        <div style="
+          font-size:14px;
+          font-weight:700;
+          color:#111827;
+          margin-bottom:3px;
+        ">
+          Penghapusan Data
+        </div>
+
+        <div style="
+          font-size:13px;
+          color:#6b7280;
+          line-height:1.6;
+        ">
+          Pengguna dapat meminta penghapusan data sesuai kebijakan privasi yang berlaku.
+        </div>
+      </div>
+    </div>
+
+    <!-- ITEM -->
+    <div style="
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      padding:14px;
+      background:#fff;
+      border-radius:14px;
+      box-shadow:0 3px 10px rgba(0,0,0,0.05);
+    ">
+      <div style="
+        min-width:34px;
+        height:34px;
+        border-radius:10px;
+        background:#dbeafe;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:16px;
+      ">
+        🔒
+      </div>
+
+      <div>
+        <div style="
+          font-size:14px;
+          font-weight:700;
+          color:#111827;
+          margin-bottom:3px;
+        ">
+          Menghentikan Layanan
+        </div>
+
+<div style="
+  font-size:13px;
+  color:#6b7280;
+  line-height:1.6;
+">
+  Pengguna dapat berhenti menggunakan layanan kapan saja tanpa biaya tambahan.
+  Pengguna juga dapat mengajukan pemberhentian layanan dan penghapusan data
+  apabila seluruh kewajiban, aturan, serta kebijakan layanan telah dipenuhi
+  sesuai syarat dan ketentuan yang berlaku.
+</div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
 
         <h3 style="color:#111;">Penutup</h3>
         <p>
@@ -2616,12 +3588,124 @@ window.showKetentuan = async function(){
           ketentuan yang berlaku dalam kebijakan ini.
         </p>
 
-        <!-- BAGIAN KONTAK DYNAMIC -->
-        <div style="margin-top:20px; padding:15px; background:#f1f5f9; border-radius:10px; font-size:14px; color:#333;">
-          <b>Kontak Kami:</b><br>
-          Email: ${data.email || "-"}<br>
-          WhatsApp: ${data.wa || "-"}
-        </div>
+ <!-- BAGIAN KONTAK PREMIUM -->
+<div style="
+  margin-top:20px;
+  padding:18px;
+  background:linear-gradient(135deg,#ffffff,#fff5f5);
+  border:1px solid #ffe0e0;
+  border-radius:16px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+">
+
+  <!-- TITLE -->
+  <div style="
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+  ">
+
+    <div style="
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      background:linear-gradient(135deg,#ff2d2d,#b10808);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-size:18px;
+      box-shadow:0 4px 12px rgba(177,8,8,0.35);
+    ">
+      ☎
+    </div>
+
+    <div>
+      <div style="
+        font-size:16px;
+        font-weight:700;
+        color:#b10808;
+      ">
+        Kontak Kami
+      </div>
+
+      <div style="
+        font-size:12px;
+        color:#888;
+        margin-top:2px;
+      ">
+        Layanan bantuan pelanggan 24 jam
+      </div>
+    </div>
+
+  </div>
+
+  <!-- EMAIL -->
+  <div style="
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px;
+    background:#fff;
+    border-radius:12px;
+    margin-bottom:10px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.05);
+  ">
+
+    <div>
+      <div style="
+        font-size:12px;
+        color:#999;
+        margin-bottom:3px;
+      ">
+        Email Support
+      </div>
+
+      <div style="
+        font-size:14px;
+        font-weight:600;
+        color:#333;
+      ">
+        ${data.email || "-"}
+      </div>
+    </div>
+
+
+  </div>
+
+  <!-- WHATSAPP -->
+  <div style="
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px;
+    background:#fff;
+    border-radius:12px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.05);
+  ">
+
+    <div>
+      <div style="
+        font-size:12px;
+        color:#999;
+        margin-bottom:3px;
+      ">
+        WhatsApp
+      </div>
+
+      <div style="
+        font-size:14px;
+        font-weight:600;
+        color:#333;
+      ">
+        ${data.wa || "-"}
+      </div>
+    </div>
+
+  </div>
+
+</div>
 
       </div>
     `);
