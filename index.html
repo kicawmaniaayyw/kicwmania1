@@ -185,44 +185,73 @@ html, body {
   box-shadow: 0 3px 8px rgba(0,0,0,0.2);
   z-index: 10;
 
-  /* TAMBAHAN */
   display: flex;
   flex-direction: column;
-  height: 180px; /* atur tinggi sesuai kebutuhan */
+  height: 180px;
 }
 
-/* Dropdown full layar separuh atas */
+/* DROPDOWN UTAMA */
 #dropdownMenu {
-  position: fixed;       /* supaya bisa full layar */
-  top: 61px;                /* mulai dari atas */
-  right: 2px;              /* menempel ke kanan */
-  width: 50vw;          /* full lebar layar */
-  height: 50vh;          /* separuh tinggi layar */
-  background: #b10808; /* hitam semi-transparan */
+  position: fixed;
+  top: 61px;
+  right: 2px;
+  width: 50vw;
+  height: 20vh;
+
+  background: #b10808;
   color: #ffffff;
-  display: none;         /* default hidden */
+
   flex-direction: column;
   padding: 20px;
-  z-index: 999;         /* pastikan di atas semua elemen */
-  overflow-y: auto;      /* scroll kalau isi banyak */
-  border-bottom-left-radius: 10px; /* opsional: rounded */
+
+  z-index: 999;
+  overflow-y: auto;
+
+  border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+
+  gap: 10px;
+
+  /* ANIMASI */
+  transform: translateX(100%);
+  opacity: 0;
+  transition: all 0.35s ease;
+
+  pointer-events: none;
+  display: flex;
 }
 
-/* setiap menu item */
+/* SAAT DIBUKA */
+#dropdownMenu.show {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* MENU ITEM */
 #dropdownMenu .menu-item {
-  padding: 12px 0;
+  padding: 8px 12px;
   border-bottom: 1px solid rgba(255,255,255,0.2);
   cursor: pointer;
   font-size: 16px;
-  border-radius: 20px;
-  
+  border-radius: 12px;
+
+  text-align: center;
+
+  transition: 0.2s;
 }
 
+/* HOVER */
+#dropdownMenu .menu-item:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+/* ITEM TERAKHIR */
 #dropdownMenu .menu-item:last-child {
   border-bottom: none;
 }
 
+/* MENU KELUAR */
 #menuKeluar {
   display: none;
   margin-top: auto;
@@ -234,14 +263,15 @@ html, body {
 
 
 .menu-item {
-  padding: 10px 20px;
+  padding: 6px 12px;
   cursor: pointer;
+  border-radius: 10px;
+  text-align: center;
 }
 
 .menu-item:hover {
   background-color: #a0a0a0;
 }
-
 /* Artikel + Foto */
 .article-photos {
   display: flex;
@@ -260,7 +290,7 @@ html, body {
   position: fixed;
   top:0; left:0;
   width:100%; height:100%;
-  background: rgba(0,0,0,0.6);
+  background: rgb(0 0 0 / 84%);
   justify-content:center;
   align-items:center;
   z-index: 1000;
@@ -487,88 +517,183 @@ html, body {
   background:#a80000;
 }
 
-/* POPUP */
+/* ===============================
+   POPUP
+=============================== */
 .popup-bayar{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100vh;
-  background:rgb(0 0 0 / 85%);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+
+  background: rgb(0 0 0 / 86%);
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 9999;
+
+  /* ANIMASI */
+  opacity: 0;
+  visibility: hidden;
+
+  transition:
+    opacity 0.35s ease,
+    visibility 0.35s ease;
 }
 
+/* ===============================
+   SAAT MUNCUL
+=============================== */
+.popup-bayar.show{
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ===============================
+   CONTENT POPUP
+=============================== */
 .popup-content{
-  background:white;
-  width:90%;
-  max-width:350px;
-  padding:20px;
-  border-radius:12px;
-  box-shadow:0 5px 20px rgba(0,0,0,0.3);
+  background: white;
+
+  width: 90%;
+  max-width: 350px;
+
+  padding: 20px;
+
+  border-radius: 12px;
+
+  box-shadow:
+    0 5px 20px rgba(0,0,0,0.3);
+
+  /* ANIMASI KECIL → BESAR */
+  transform: scale(0.7);
+
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+
+  position: relative;
 }
 
+/* ===============================
+   ANIMASI AKTIF
+=============================== */
+.popup-bayar.show .popup-content{
+  transform: scale(1);
+}
+
+/* ===============================
+   FORM
+=============================== */
 .form-group{
-  margin-bottom:18px;
+  margin-bottom: 18px;
 }
 
 .form-group label{
-  font-weight:600;
-  font-size:14px;
-  display:block;
-  margin-bottom:6px;
-  color:#444;
+  font-weight: 600;
+  font-size: 14px;
+
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #444;
 }
 
 .form-group input{
-  width:100%;
-  padding:12px 14px;
-  border:1px solid #ddd;
-  border-radius:8px;
-  background:#fafafa;
-  font-size:16px;
-  transition:all 0.2s ease;
-  box-sizing:border-box;
+  width: 100%;
+
+  padding: 12px 14px;
+
+  border: 1px solid #ddd;
+
+  border-radius: 8px;
+
+  background: #fafafa;
+
+  font-size: 16px;
+
+  transition: all 0.2s ease;
+
+  box-sizing: border-box;
+
   font-weight: bold;
 }
 
-/* efek saat diklik */
+/* ===============================
+   INPUT FOCUS
+=============================== */
 .form-group input:focus{
-  outline:none;
-  border-color:#ffffff;
-  background:#fff;
-  box-shadow:0 0 0 2px rgba(196,0,0,0.08);
+  outline: none;
+
+  border-color: #ffffff;
+
+  background: #fff;
+
+  box-shadow:
+    0 0 0 2px rgba(196,0,0,0.08);
 }
 
-/* placeholder */
+/* ===============================
+   PLACEHOLDER
+=============================== */
 .form-group input::placeholder{
-  color:#999;
-  font-size:14px;
+  color: #999;
+  font-size: 14px;
 }
 
+/* ===============================
+   VA IMAGE
+=============================== */
 .va-image{
-  border:1px dashed #ccc;
-  padding:10px;
-  text-align:center;
-  border-radius:8px;
-  background:#fafafa;
+  border: 1px dashed #ccc;
+
+  padding: 10px;
+
+  text-align: center;
+
+  border-radius: 8px;
+
+  background: #fafafa;
 }
 
 .va-image img{
-  width:100%;
-  max-width:250px;
+  width: 100%;
+  max-width: 250px;
 }
 
+/* ===============================
+   CLOSE BUTTON
+=============================== */
 .close-btn{
-  width:100%;
-  padding:12px;
-  background:#c40000;
-  color:white;
-  border:none;
-  border-radius:20px;
-  cursor:pointer;
+  width: 100%;
+
+  padding: 12px;
+
+  background: #c40000;
+
+  color: white;
+
+  border: none;
+
+  border-radius: 20px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+/* HOVER */
+.close-btn:hover{
+  transform: scale(1.03);
+  background: #a80000;
+}
+
+/* KLIK */
+.close-btn:active{
+  transform: scale(0.98);
 }
 
 /* LOGIN CARD */
@@ -851,6 +976,19 @@ html, body {
   opacity: 1;
 }
 
+
+.toast-wrap{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.toast-logo{
+  width:24px;
+  height:24px;
+  object-fit:contain;
+  border-radius:20%;
+}
 
 
 
@@ -1741,96 +1879,243 @@ function updateUserDashboard(){
 
 
  // Toggle dropdown menu
-window.toggleMenu = function(){
+window.toggleMenu = function () {
   const menu = document.getElementById("dropdownMenu");
-  menu.style.display = menu.style.display === "block" ? "none" : "block";
+
+  if (menu.classList.contains("show")) {
+    
+    // TUTUP MENU
+    menu.classList.remove("show");
+
+    setTimeout(() => {
+      menu.style.display = "none";
+    }, 350);
+
+  } else {
+
+    // BUKA MENU
+    menu.style.display = "flex";
+
+    setTimeout(() => {
+      menu.classList.add("show");
+    }, 10);
+  }
 }
+
+
+
 
 // Fungsi menampilkan modal profesional
 window.showKontak = function () {
+
   const kontakRef = ref(rtdb, "setting/contact");
 
   // listener realtime
   onValue(kontakRef, (snapshot) => {
+
     if (!snapshot.exists()) {
       return alert("Data kontak tidak ditemukan!");
     }
+
     const data = snapshot.val();
 
-showModal(`
-  <div style="font-family:'Segoe UI',sans-serif; color:#333; max-width:400px; margin:0 auto;">
-    <h2 style="color:#e90e0e; margin-bottom:15px; text-align:center;">Kontak Kami</h2>
+    showModal(`
 
-    <p style="font-size:14px; color:#555; text-align:center; margin-bottom:20px;">
-      Kami siap membantu Anda 24 jam untuk semua kebutuhan layanan Rupiah Segar.
-    </p>
+<div style="
+  font-family:'Segoe UI',sans-serif;
+  color:#333;
+  max-width:400px;
+  margin:0 auto;
+">
 
-    <div style="display:grid; gap:12px;">
+  <h2 style="
+    color:#e90e0e;
+    margin-bottom:15px;
+    text-align:center;
+  ">
+    Kontak Kami
+  </h2>
 
-      <!-- EMAIL -->
-      <div style="
-        display:flex; align-items:center; padding:15px; background:#f8fafc;
-        border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.08);
-      ">
-        <span style="font-size:20px; margin-right:10px;">📧</span>
-        <div style="flex:1;">
-          <b>Email Support</b><br>
-          <span style="color:#7f5c5c;">${data.email || "-"}</span>
-        </div>
-        <button style="
-          background:#a7a7a7; color:white; border:none; padding:5px 10px;
-          border-radius:6px; cursor:pointer; font-size:12px;"
-          onclick="navigator.clipboard.writeText('${data.email || ""}'); alert('Email disalin!')">
-          Copy
-        </button>
-      </div>
+  <p style="
+    font-size:14px;
+    color:#555;
+    text-align:center;
+    margin-bottom:20px;
+  ">
+    Kami siap membantu Anda 24 jam untuk semua kebutuhan layanan Rupiah Segar.
+  </p>
 
-      <!-- WHATSAPP -->
-      <div style="
-        display:flex; align-items:center; padding:15px; background:#f8fafc;
-        border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.08);
-      ">
-        <span style="font-size:20px; margin-right:10px;">📱</span>
-        <div style="flex:1;">
-          <b>WhatsApp</b><br>
-          <span style="color:#7f5c5c;">${data.wa || "-"}</span>
-        </div>
-        <button style="
-          background:#a7a7a7; color:white; border:none; padding:5px 10px;
-          border-radius:6px; cursor:pointer; font-size:12px;"
-          onclick="navigator.clipboard.writeText('${data.wa || ""}'); alert('Nomor WA disalin!')">
-          Copy
-        </button>
-      </div>
+  <div style="display:grid; gap:12px;">
 
-      <!-- JAM OPERASIONAL -->
-      <div style="
-        display:flex; align-items:center; padding:15px; background:#f8fafc;
-        border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.08);
-      ">
-        <span style="font-size:20px; margin-right:10px;">⏰</span>
-        <div style="flex:1;">
-          <b>Jam Operasional</b><br>
-          <span style="color:#7f5c5c;">${data.jam || "-"}</span>
-        </div>
-      </div>
-
-    </div>
-
+    <!-- EMAIL -->
     <div style="
-      margin-top:20px; padding:15px; background:#e0f2fe;
-      border-radius:10px; font-size:13px; color:#0369a1; text-align:center;
+      display:flex;
+      align-items:center;
+      padding:15px;
+      background:#f8fafc;
+      border-radius:12px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.08);
     ">
-      Menggunakan layanan, Anda telah menyetujui Kebijakan Privasi kami.
+
+      <span style="
+        font-size:20px;
+        margin-right:10px;
+      ">
+        📧
+      </span>
+
+      <div style="flex:1;">
+        <b>Email Support</b><br>
+
+        <span style="color:#7f5c5c;">
+          ${data.email || "-"}
+        </span>
+      </div>
+
+      <button style="
+        background:#a7a7a7;
+        color:white;
+        border:none;
+        padding:5px 10px;
+        border-radius:6px;
+        cursor:pointer;
+        font-size:12px;
+      "
+
+      onclick="
+        navigator.clipboard.writeText('${data.email || ""}');
+
+        showToast(\`
+          <div class='toast-wrap'>
+            <img src='Rupiah segar.jpg' class='toast-logo'>
+            <span>Email berhasil disalin</span>
+          </div>
+        \`);
+      "
+
+      >
+        Copy
+      </button>
+
     </div>
+
+    <!-- WHATSAPP -->
+    <div style="
+      display:flex;
+      align-items:center;
+      padding:15px;
+      background:#f8fafc;
+      border-radius:12px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    ">
+
+      <span style="
+        font-size:20px;
+        margin-right:10px;
+      ">
+        📱
+      </span>
+
+      <div style="flex:1;">
+        <b>WhatsApp</b><br>
+
+        <span style="color:#7f5c5c;">
+          ${data.wa || "-"}
+        </span>
+      </div>
+
+      <button style="
+        background:#a7a7a7;
+        color:white;
+        border:none;
+        padding:5px 10px;
+        border-radius:6px;
+        cursor:pointer;
+        font-size:12px;
+      "
+
+      onclick="
+        navigator.clipboard.writeText('${data.wa || ""}');
+
+        showToast(\`
+          <div class='toast-wrap'>
+            <img src='Rupiah segar.jpg' class='toast-logo'>
+            <span>Nomor WhatsApp berhasil disalin</span>
+          </div>
+        \`);
+      "
+
+      >
+        Copy
+      </button>
+
+    </div>
+
+    <!-- JAM OPERASIONAL -->
+    <div style="
+      display:flex;
+      align-items:center;
+      padding:15px;
+      background:#f8fafc;
+      border-radius:12px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    ">
+
+      <span style="
+        font-size:20px;
+        margin-right:10px;
+      ">
+        ⏰
+      </span>
+
+      <div style="flex:1;">
+        <b>Jam Operasional</b><br>
+
+        <span style="color:#7f5c5c;">
+          ${data.jam || "-"}
+        </span>
+      </div>
+
+    </div>
+
   </div>
+
+  <div style="
+    margin-top:20px;
+    padding:15px;
+    background:#e0f2fe;
+    border-radius:10px;
+    font-size:13px;
+    color:#0369a1;
+    text-align:center;
+  ">
+    Menggunakan layanan, Anda telah menyetujui Kebijakan Privasi kami.
+  </div>
+
+</div>
+
 `);
 
   }, (error) => {
+
     console.error(error);
+
     alert("Gagal ambil data kontak!");
+
   });
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 window.showKetentuan = async function(){
   try {
@@ -1947,63 +2232,181 @@ window.addEventListener("click", function(e){
 <script>
  
 // tombol login
+// ===============================
+// OPEN POPUP BAYAR (ANIMASI)
+// ===============================
+function openBayar() {
 
-function openBayar(){ document.getElementById("bayarPopup").style.display="flex"; }
-function closeBayar(){ document.getElementById("bayarPopup").style.display="none"; }
+  const popup = document.getElementById("bayarPopup");
 
-function showPage(page){
-  document.querySelectorAll(".page").forEach(p=>p.style.display="none");
-  document.getElementById(page+"Page").style.display="block";
+  if (!popup) return;
+
+  popup.style.display = "flex";
+
+  setTimeout(() => {
+    popup.classList.add("show");
+  }, 10);
 }
 
-// Fungsi untuk menampilkan toast
-function showToast(msg, color = "#4caf50") {
+// ===============================
+// CLOSE POPUP BAYAR
+// ===============================
+function closeBayar() {
+
+  const popup = document.getElementById("bayarPopup");
+
+  if (!popup) return;
+
+  popup.classList.remove("show");
+
+  setTimeout(() => {
+    popup.style.display = "none";
+  }, 350);
+}
+
+// ===============================
+// SHOW PAGE
+// ===============================
+function showPage(page) {
+
+  document.querySelectorAll(".page").forEach(p => {
+    p.style.display = "none";
+  });
+
+  const target = document.getElementById(page + "Page");
+
+  if (target) {
+    target.style.display = "block";
+  }
+}
+
+// ===============================
+// TOAST
+// ===============================
+function showToast(html, color = "#4caf50") {
+
   const toast = document.getElementById("toast");
-  toast.innerText = msg;
-  toast.style.backgroundColor = color; // bisa hijau, merah, biru, dll
+
+  if (!toast) return;
+
+  toast.innerHTML = html;
+
+  toast.style.backgroundColor = color;
+
   toast.classList.add("show");
 
   setTimeout(() => {
     toast.classList.remove("show");
-  }, 2500); // durasi tampil 2,5 detik
+  }, 2500);
 }
 
-// Fungsi copy dengan toast
+// ===============================
+// COPY ORDER ID
+// ===============================
 function copyOrder() {
-  const text = document.getElementById("orderId").innerText;
+
+  const orderEl = document.getElementById("orderId");
+
+  // 🔥 cek elemen ada atau tidak
+  if (!orderEl) {
+
+    showToast(`
+      <div class="toast-wrap">
+        <img src="Rupiah segar.jpg" class="toast-logo">
+        <span>Order ID tidak ditemukan</span>
+      </div>
+    `, "#f44336");
+
+    return;
+  }
+
+  const text = orderEl.innerText;
+
+  // 🔥 copy ke clipboard
   navigator.clipboard.writeText(text)
+
     .then(() => {
-      showToast("Order ID berhasil disalin"); // toast custom
+
+      showToast(`
+        <div class="toast-wrap">
+          <img src="Rupiah segar.jpg" class="toast-logo">
+          <span>Order ID berhasil disalin</span>
+        </div>
+      `);
+
     })
+
     .catch(() => {
-      showToast("Gagal menyalin Order ID", "#f44336"); // toast merah jika error
+
+      showToast(`
+        <div class="toast-wrap">
+          <img src="Rupiah segar.jpg" class="toast-logo">
+          <span>Gagal menyalin Order ID</span>
+        </div>
+      `, "#f44336");
+
     });
 }
 
-document.addEventListener("click", function(e){
 
-  if(e.target && e.target.id === "copyVA"){
+// ===============================
+// COPY VA BUTTON
+// ===============================
+document.addEventListener("click", function (e) {
+
+  if (e.target && e.target.id === "copyVA") {
 
     console.log("Tombol Salin diklik");
 
-    const kodeVA = document.getElementById("popupKodeVA")?.innerText.trim();
+    const kodeVA =
+      document.getElementById("popupKodeVA")?.innerText.trim();
 
-    if(!kodeVA){
-      showToast("Kode VA tidak tersedia", "#f44336");
+    // 🔥 cek apakah VA ada
+    if (!kodeVA) {
+
+      showToast(`
+        <div class="toast-wrap">
+          <img src="Rupiah segar.jpg" class="toast-logo">
+          <span>Kode VA tidak tersedia</span>
+        </div>
+      `, "#f44336");
+
       return;
     }
 
+    // 🔥 copy ke clipboard
     navigator.clipboard.writeText(kodeVA)
-      .then(()=>{
-        showToast("Kode VA berhasil disalin");
+
+      .then(() => {
+
+        showToast(`
+          <div class="toast-wrap">
+            <img src="Rupiah segar.jpg" class="toast-logo">
+            <span>Kode VA berhasil disalin</span>
+          </div>
+        `);
+
       })
-      .catch(()=>{
-        showToast("Gagal menyalin Kode VA", "#f44336");
+
+      .catch(() => {
+
+        showToast(`
+          <div class="toast-wrap">
+            <img src="logo.png" class="toast-logo">
+            <span>Gagal menyalin Kode VA</span>
+          </div>
+        `, "#f44336");
+
       });
-
   }
-
 });
+
+
+
+
+
+
+
 
 
 window.logoutAkun = function(){
