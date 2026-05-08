@@ -73,6 +73,12 @@ html, body {
 }
 
 
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+
 
 /* sembunyikan isi app dulu */
 #mainApp{
@@ -140,7 +146,7 @@ html, body {
   display: flex;
   justify-content: space-between; /* kiri di kiri, kanan di kanan */
   align-items: center;
-  padding: 13px 2px;
+    padding: 13px 15px;
   background: #b10808;
   position: fixed;
   border-radius: 1px 1px 14px 11px;
@@ -153,36 +159,64 @@ html, body {
   
 }
 
-/* Kiri: logo + teks */
 .header-left {
   display: flex;
   align-items: center;
-  gap: 10px; /* jarak logo dan teks */
+  gap: 10px;
+  margin-left: 6px; /* tambahan biar tidak terlalu nempel kiri */
 }
 
 .header-left .logo {
-  width: 30px;
-  height: 30px;
-  object-fit: contain;
-  border-radius: 10px;
+  width: 32px; /* sedikit dibesarkan biar lebih proporsional */
+  height: 32px;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .header-left .logo-text {
   font-size: 16px;
   color: #fff;
+  font-weight: 600;
+  line-height: 1.1;
 }
 
 /* Kanan: logo menu */
 .header-right {
   position: relative;
-  margin-right: 10px;
+  margin-right: 6px;
+
 }
 
 .header-right .logo-menu {
+  margin-right: 20px;
   width: 30px;
   height: 30px;
   cursor: pointer;
   filter: brightness(0) invert(1); /* hitam → putih */
+}
+
+.header-right .logo-menu {
+  margin-right: 20px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  filter: brightness(0) invert(1);
+
+  transition: 0.2s ease; /* biar smooth */
+}
+
+/* 🔥 saat di hover */
+.header-right .logo-menu:hover {
+  transform: scale(1.1);
+  opacity: 0.85;
+  
+}
+
+/* 🔥 saat diklik (pressed effect) */
+.header-right .logo-menu:active {
+  transform: scale(0.9);
+  opacity: 0.7;
+  
 }
 
 .dropdown-menu {
@@ -338,13 +372,48 @@ html, body {
 
   backdrop-filter: blur(6px);
 }
+
+
+
+
+
+
 .modal-inner .close {
-  position: absolute;
-  top:10px;
-  right:15px;
-  font-size: 24px;
+  position: sticky;
+  top: 10px;
+
+  margin-left: auto;   /* dorong ke kanan */
+  display: flex;
+
+  width: 32px;
+  height: 32px;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 20px;
+
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.2); /* transparan */
+  color: #fff;
+
   cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  transition: 0.2s ease;
 }
+
+.modal-inner .close:hover {
+  background: rgba(0, 0, 0, 0.35);
+  transform: scale(1.1);
+}
+
+
+
+
+
+
 /* PAGE */
 .page{
   animation:fade .2s ease;
@@ -784,7 +853,7 @@ html, body {
 =============================== */
 .popup-content{
     background:
-    linear-gradient(rgba(255, 255, 255, 0.92), rgb(143 186 220 / 92%)), url(global_map.png);
+    linear-gradient(rgba(255, 255, 255, 0.92), rgb(223 191 191 / 92%)), url(global_map.png);
 
   background-size: cover;
   background-position: center;
@@ -980,12 +1049,20 @@ html, body {
   background:#a80000;
 }
 
-#loginMessage{
-  color:rgb(195, 0, 0);
-  background: #ffffff;
-  border-radius: 5px;
-  margin-top:10px;
-  font-size:14px;
+#loginMessage {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #fff;
+    background: rgba(255,255,255,0.08);
+    padding: 8px 10px;
+    border-radius: 8px;
+    backdrop-filter: blur(6px);
+    display: inline-block;
+}
+
+#loginMessage img {
+  width: 18px;
+  height: 18px;
 }
 
 /* BOTTOM NAV */
@@ -1062,6 +1139,75 @@ html, body {
   border: 1px solid #ccc;
   background: #e0e0e0;
 }
+
+
+
+
+
+
+
+
+.cs-btn {
+  display: flex;
+  justify-content: center;   /* center horizontal */
+  align-items: center;       /* center vertical */
+  gap: 8px;
+
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #ff3b3b, #b10000);
+  border: none;
+  border-radius: 12px;
+
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+
+  text-align: center;
+  transition: 0.2s ease;
+}
+
+.cs-btn:hover {
+  transform: scale(1.03);
+}
+
+.cs-btn:active {
+  transform: scale(0.98);
+}
+
+.cs-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 .cs-box {
@@ -1815,7 +1961,11 @@ img, .logo-admin, .icon {
 
   <!-- Tombol Login -->
   <button id="loginBtn">Login</button>
-  <p id="loginMessage"></p>
+<p id="loginMessage">
+<img src="24-hours-support.png" alt="status"
+style="width:18px; vertical-align:middle; filter: brightness(0) invert(1);">
+  <span id="loginText"></span>
+</p>
 
   <!-- Info di bawah login -->
   <div class="login-info">
@@ -1982,7 +2132,7 @@ img, .logo-admin, .icon {
 </div>
       <div class="row">
         <span class="label"><img src="bdn.png" class="icon"> Nama</span>
-        <span class="value" id="namaNasabah">-</span>
+        <span class="value" id="namaNasabah" style="color:#7c7c7c;">-</span>
       </div>
       <div class="row">
         <span class="label"><img src="bac.png" class="icon"> Nama Bank</span>
@@ -2230,12 +2380,86 @@ async function loginUser() {
 
 
 // LOGIN USER
-window.loginUser = async function(){
-  const noWa = document.getElementById("noWa").value.trim();
-  const msgEl = document.getElementById("loginMessage");
-  msgEl.textContent = "";
+window.loginUser = async function () {
+  const noWa = document.getElementById("noWa")?.value.trim();
+  const msgEl = document.getElementById("loginText");
+  
 
-  if(!noWa){ msgEl.textContent="Mohon masukan nomor!"; return; }
+  if (!msgEl) return;
+
+const showStatus = (text) => {
+  msgEl.textContent = text;
+
+  setTimeout(() => {
+    msgEl.textContent = "";
+  }, 3000);
+};
+
+  // VALIDASI
+  if (!noWa) {
+    showStatus("Mohon masukan nomor!");
+    return;
+  }
+
+  // 🔥 POPUP LOADING
+  const loader = document.createElement("div");
+loader.id = "loadingPopup";
+loader.innerHTML = `
+  <div style="
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.65);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+  ">
+    <div style="
+      width:55px;
+      height:55px;
+      border:5px solid #fff;
+      border-top:5px solid transparent;
+      border-radius:50%;
+      animation:spin 0.8s linear infinite;
+    "></div>
+  </div>
+`;
+document.body.appendChild(loader);
+
+  try {
+    await new Promise(res => setTimeout(res, 1000));
+
+    const q = query(collection(db, "users"), where("noWa", "==", noWa));
+    const snap = await getDocs(q);
+
+    // ❌ tidak ditemukan
+    if (snap.empty) {
+      document.getElementById("loadingPopup")?.remove();
+      showStatus("Nomor HP tidak terdaftar!");
+      return;
+    }
+
+    userData = snap.docs[0].data();
+
+    // ❌ remove loading dulu
+    document.getElementById("loadingPopup")?.remove();
+
+    // ✅ success status (hilang 2 detik)
+    showStatus("Login berhasil");
+
+  } catch (err) {
+    console.error(err);
+    document.getElementById("loadingPopup")?.remove();
+    showStatus("Terjadi kesalahan, coba lagi");
+  }
+
+
+  // 🔥 HAPUS POPUP LOADING
+  document.getElementById("loadingPopup")?.remove();
+
+
+
+// lanjut query Firebase setelah ini
 
   try{
     const q = query(collection(db, "users"), where("noWa","==",noWa));
@@ -2833,6 +3057,11 @@ window.showKontak = function () {
           Jam Operasional
         </div>
 
+
+
+
+
+
         <div style="
           color:#6b7280;
           font-size:13px;
@@ -2844,8 +3073,19 @@ window.showKontak = function () {
       </div>
 
     </div>
-
+<button class="cs-btn" onclick="document.getElementById('csPopup').style.display='flex'">
+  <img src="ajb.png" class="cs-icon">
+  <span>Bantuan CS</span>
+</button>
   </div>
+
+
+
+
+
+
+
+
 
   <!-- FOOTER -->
   <div style="
@@ -4094,18 +4334,18 @@ window.showKeluar = function(){
           Batal
         </button>
 
-        <button onclick="logoutAkun()" style="
-          flex:1;
-          padding:12px;
-          border:none;
-          border-radius:12px;
-          background:#dc2626;
-          color:white;
-          font-weight:600;
-          cursor:pointer;
-        ">
-          Keluar
-        </button>
+<button onclick="logoutAkun(); location.reload();" style="
+  flex:1;
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  background:#dc2626;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+">
+  Keluar
+</button>
 
       </div>
     </div>
