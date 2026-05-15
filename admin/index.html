@@ -778,6 +778,101 @@ button.logout-btn:active {
 
 
 
+
+
+
+
+
+
+.header-card{
+  max-width: 420px;
+  padding: 22px;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.header-title{
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: #222;
+}
+
+.form-group{
+  margin-bottom: 14px;
+}
+
+.form-group label{
+  display:block;
+  font-size: 13px;
+  margin-bottom: 6px;
+  color:#666;
+}
+
+.form-group input{
+  width:100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  outline: none;
+  transition: 0.2s;
+}
+
+.form-group input:focus{
+  border-color: #2e00c5;
+  box-shadow: 0 0 0 3px rgba(46,0,197,0.1);
+}
+
+.upload-box{
+  border: 2px dashed #ddd;
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.upload-box:hover{
+  border-color: #2e00c5;
+  background: #f8f7ff;
+}
+
+.upload-text{
+  font-size: 12px;
+  color:#888;
+  display:block;
+  margin-top:8px;
+}
+
+.preview-img{
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+
+.btn-primary{
+  width:100%;
+  padding: 12px;
+  border:none;
+  border-radius: 12px;
+  background: linear-gradient(135deg,#2e00c5,#2575fc);
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  transition: 0.2s;
+}
+
+.btn-primary:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(46,0,197,0.25);
+}
+
+
+
+
 </style>
 </head>
 
@@ -996,6 +1091,8 @@ button.logout-btn:active {
   <button onclick="show('va', this)">Virtual Account</button>
   <button onclick="window.location.href='https://pinajamanku.github.io/pinjamanku/upload/'">Link Foto</button>
   <button onclick="show('vscode', this)">Atur Iklan</button>
+  <button onclick="setActiveMenu(event, 'gantilogo')">Ganti Logo</button>
+
 
 
 <div class="welcome-box">
@@ -1075,6 +1172,53 @@ button.logout-btn:active {
 
   </div>
 </div>
+
+
+
+
+<div id="gantilogo" class="card header-card" style="display:none;">
+
+  <div class="header-title">
+    ⚙️ Setting Header
+  </div>
+
+  <!-- LOGO UPLOAD -->
+  <div class="form-group">
+
+    <label>Logo</label>
+
+    <div class="upload-box">
+
+      <input type="file" id="inputLogo" class="file-input">
+
+      <div class="upload-preview">
+        <img id="previewLogo" class="preview-img" style="display:none;">
+        <span class="upload-text">Pilih atau drag gambar logo</span>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- TITLE -->
+  <div class="form-group">
+    <label>Title</label>
+    <input type="text" id="inputTitle" placeholder="Masukkan Judul">
+  </div>
+
+  <!-- DESKRIPSI -->
+  <div class="form-group">
+    <label>Deskripsi</label>
+    <input type="text" id="inputDesc" placeholder="Masukkan Deskripsi">
+  </div>
+
+  <!-- BUTTON -->
+  <button onclick="saveHeaderSetting()" class="btn-primary">
+    💾 Simpan Header
+  </button>
+
+</div>
+
 
 
 
@@ -1324,6 +1468,95 @@ const db = getFirestore(app);
 const realtimeDB = getDatabase(app);
 const storage = getStorage(app);
 
+
+
+
+const CLOUD_NAME = "djxlbemky";
+const UPLOAD_PRESET = "uploadgambar";
+
+async function uploadToCloudinary(file) {
+
+  const form = new FormData();
+  form.append("file", file);
+  form.append("upload_preset", UPLOAD_PRESET);
+
+  const res = await fetch(
+    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+    {
+      method: "POST",
+      body: form
+    }
+  );
+
+  const data = await res.json();
+
+  if (!data.secure_url) {
+    throw new Error("Upload gagal ke Cloudinary");
+  }
+
+  return data.secure_url;
+}
+
+
+// =========================
+// SAVE HEADER
+// =========================
+window.saveHeaderSetting = async function () {
+
+  try {
+
+    const title = document.getElementById("inputTitle").value;
+    const desc = document.getElementById("inputDesc").value;
+    const file = document.getElementById("inputLogo").files[0];
+
+    let logoUrl = "";
+
+    // kalau ada gambar baru
+    if (file) {
+      logoUrl = await uploadToCloudinary(file);
+    }
+
+    await set(ref(realtimeDB, "setting/header"), {
+      title,
+      desc,
+      logo: logoUrl
+    });
+
+    alert("Header berhasil diupdate!");
+
+  } catch (err) {
+    console.error(err);
+    alert("Gagal upload header!");
+  }
+};
+
+window.setActiveMenu = function (e, menu) {
+
+  document.querySelectorAll(".content > div")
+    .forEach(x => x.style.display = "none");
+
+  const target = document.getElementById(menu);
+  if (target) target.style.display = "block";
+
+  document.querySelectorAll(".sidebar button")
+    .forEach(btn => btn.classList.remove("active"));
+
+  e.target.classList.add("active");
+};
+
+
+document.getElementById("inputLogo").addEventListener("change", function(e){
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(evt){
+    const img = document.getElementById("previewLogo");
+    img.src = evt.target.result;
+    img.style.display = "block";
+  };
+  reader.readAsDataURL(file);
+});
 
 
 
@@ -1882,6 +2115,7 @@ function formatRupiah(angka){
 let currentAdmin = null;
 
 
+
 // ========================
 // 🔐 LOGIN ADMIN
 // ========================
@@ -1891,7 +2125,7 @@ window.loginAdminX = async function(){
   const pass = document.getElementById("inputAdminPassX").value.trim();
 
   if(!wa || !pass){
-    return alert("Nomor WA & Password wajib diisi!");
+    return alert("form wajib diisi!");
   }
 
   try {
@@ -2017,7 +2251,7 @@ document.getElementById("btnSubmitPassX").onclick = async function(){
   const confirmPass = document.getElementById("confirmPassX").value.trim();
 
   if(!noWa || !oldPass || !newPass || !confirmPass){
-    return alert("Semua field wajib diisi!");
+    return alert("password tidak cocok!");
   }
 
   if(newPass !== confirmPass){

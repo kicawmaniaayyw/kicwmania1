@@ -1918,38 +1918,42 @@ img, .logo-admin, .icon {
 <!-- HEADER -->
 <div class="header">
 
-  <!-- Kiri: logo + teks -->
+  <!-- KIRI (dinamis) -->
   <div class="header-left">
 
-    <img src="Rupiah segar.jpg" class="logo">
+    <img id="logoHeader" class="logo">
 
     <div class="logo-area">
 
-      <span class="logo-text">Rupiah Segar</span>
+      <span class="logo-text" id="titleHeader">Loading...</span>
 
-      <div class="logo-desc">
-        Cek Tagihan & Pembayaran
+      <div class="logo-desc" id="descHeader">
+        Loading...
       </div>
 
     </div>
 
   </div>
 
-  <!-- Kanan: logo menu dengan dropdown -->
+  <!-- KANAN (TETAP FILTER MENU) -->
   <div class="header-right">
-    <img src="country_filter_icon.png" class="logo-menu" onclick="toggleMenu()">
+
+    <img src="country_filter_icon.png"
+         class="logo-menu"
+         onclick="toggleMenu()">
+
     <div id="dropdownMenu" class="dropdown-menu">
       <div class="menu-item" onclick="showKontak()">Kontak Bantuan</div>
       <div class="menu-item" onclick="showKetentuan()">Ketentuan & Privasi</div>
+      <div class="menu-item" id="menuKeluar">Keluar</div>
+    </div>
 
-<div class="menu-item" id="menuKeluar">
-  Keluar
-</div>
-    
-
-</div>
   </div>
+
 </div>
+
+
+
 
 <div id="mainApp"></div>
 
@@ -2338,6 +2342,48 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const rtdb = getDatabase(app);
+const realtimeDB = getDatabase(app);
+
+
+
+
+
+
+window.addEventListener("load", () => {
+
+  const headerRef = ref(realtimeDB, "setting/header");
+
+  onValue(headerRef, (snap) => {
+
+    console.log("HEADER SNAP:", snap.val()); // 🔥 cek debug
+
+    if (!snap.exists()) {
+      console.log("Data header kosong");
+      return;
+    }
+
+    const data = snap.val();
+
+    // TITLE
+    const title = document.getElementById("titleHeader");
+    if (title) title.innerText = data.title || "Rupiah Segar";
+
+    // DESC
+    const desc = document.getElementById("descHeader");
+    if (desc) desc.innerText = data.desc || "Cek Tagihan & Pembayaran";
+
+    // LOGO
+    const logo = document.getElementById("logoHeader");
+    if (logo && data.logo) logo.src = data.logo;
+
+  });
+
+});
+
+
+
+
+
 
 
 /* BASE64 */
