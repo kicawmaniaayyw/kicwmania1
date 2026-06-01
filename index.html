@@ -1973,9 +1973,9 @@ img, .logo-admin, .icon {
 <!-- LOGIN CARD -->
 <div id="loginCard">
   <!-- Logo di atas -->
-  <div class="logo-top">
-    <img src="Rupiah segar.jpg" alt="Logo" class="logo-img">
-  </div>
+<div class="logo-top">
+  <img id="logoImg" src="" alt="Logo" class="logo-img">
+</div>
 
   <!-- Judul Login -->
   <h2>Login Akun</h2>
@@ -2344,6 +2344,34 @@ const db = getFirestore(app);
 const rtdb = getDatabase(app);
 const realtimeDB = getDatabase(app);
 
+
+
+
+onValue(ref(realtimeDB, "setting/maintenance"), (snap) => {
+
+  const maintenance = snap.val();
+
+  if (maintenance === true) {
+
+    if (!location.pathname.includes("maintenance.html")) {
+      location.href = "maintenance.html";
+    }
+
+  }
+
+});
+
+
+
+onValue(ref(realtimeDB, "setting/header/logo"), (snap) => {
+
+  const logoUrl = snap.val();
+
+  if (logoUrl) {
+    document.getElementById("logoImg").src = logoUrl;
+  }
+
+});
 
 
 
