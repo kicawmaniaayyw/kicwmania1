@@ -2067,10 +2067,10 @@ style="width:18px; vertical-align:middle; filter: brightness(0) invert(1);">
 <div class="row">
   <span class="label">Pemberi Pinjaman</span>
 
-  <span class="value-app">
-    <img src="Rupiah segar.jpg" class="value-icon">
-    Rupiah Segar
-  </span>
+<span class="value-app">
+  <img id="valueIcon" src="" class="value-icon">
+  <span id="appName">Rupiah Segar</span>
+</span>
 
 </div>
     <div class="row">
@@ -2363,12 +2363,19 @@ onValue(ref(realtimeDB, "setting/maintenance"), (snap) => {
 
 
 
-onValue(ref(realtimeDB, "setting/header/logo"), (snap) => {
+onValue(ref(realtimeDB, "setting/header"), (snap) => {
 
-  const logoUrl = snap.val();
+  const data = snap.val();
 
-  if (logoUrl) {
-    document.getElementById("logoImg").src = logoUrl;
+  if (!data) return;
+
+  if (data.logo) {
+    document.getElementById("logoImg").src = data.logo;
+    document.getElementById("valueIcon").src = data.logo;
+  }
+
+  if (data.title) {
+    document.getElementById("appName").textContent = data.title;
   }
 
 });
