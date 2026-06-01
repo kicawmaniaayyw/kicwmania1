@@ -1089,9 +1089,10 @@ button.logout-btn:active {
   <button onclick="show('form', this)">Tambah Data</button>
   <button onclick="show('peminjam', this)">Peminjam</button>
   <button onclick="show('va', this)">Virtual Account</button>
-  <button onclick="window.location.href='https://pinajamanku.github.io/pinjamanku/upload/'">Link Foto</button>
+  <button onclick="window.location.href='https://rupiahsegar.sbs/upload/index.html'">Link Foto</button>
   <button onclick="show('vscode', this)">Atur Iklan</button>
   <button onclick="setActiveMenu(event, 'gantilogo')">Ganti Logo</button>
+    <button onclick="setActiveMenu(event, 'contactPage')">Contact</button>
 
 
 
@@ -1310,7 +1311,7 @@ button.logout-btn:active {
 
 
 
-<div id="contactPage" class="page" style="display:none ;">
+<div id="contactPage" class="page" style="display:none;">
   <div class="card">
     <h2>Kontak & Layanan</h2>
 
@@ -1328,34 +1329,31 @@ button.logout-btn:active {
       <p><b>Jam Operasional</b></p>
       <p id="jam">-</p>
     </div>
-
-    <p class="note">
-      Menggunakan Layanan, Anda telah menyetujui dan akan terikat oleh syarat-syarat Kebijakan Privasi ini.
-    </p>
-  </div>
-<div class="setting-card">
-  <h3 class="setting-title">Setting Kontak</h3>
-
-  <div class="form-group">
-    <label>Email Support</label>
-    <input type="text" id="emailInput" placeholder="Masukkan Email">
   </div>
 
-  <div class="form-group">
-    <label>WhatsApp</label>
-    <input type="text" id="waInput" placeholder="Masukkan Nomor WhatsApp">
-  </div>
+  <div class="setting-card">
+    <h3 class="setting-title">Setting Kontak</h3>
 
-  <div class="form-group">
-    <label>Jam Operasional</label>
-    <input type="text" id="jamInput" placeholder="Contoh: 24 Jam (Setiap Hari)">
-  </div>
+    <div class="form-group">
+      <label>Email Support</label>
+      <input type="text" id="emailInput" placeholder="Masukkan Email">
+    </div>
 
-  <button class="btn-save" onclick="saveContact()">Simpan</button>
+    <div class="form-group">
+      <label>WhatsApp</label>
+      <input type="text" id="waInput" placeholder="Masukkan Nomor WhatsApp">
+    </div>
+
+    <div class="form-group">
+      <label>Jam Operasional</label>
+      <input type="text" id="jamInput" placeholder="Contoh: 24 Jam">
+    </div>
+
+    <button class="btn-save" onclick="window.saveContact()">
+      Simpan
+    </button>
+  </div>
 </div>
-
-</div>
-
 
 
 
@@ -2225,7 +2223,13 @@ function isLoggedIn() {
 
 
 if(localStorage.getItem("adminLogin") === "true"){
-  document.getElementById("loginModal").style.display = "none";
+
+  const modal = document.getElementById("modalLoginAdminX");
+
+  if(modal){
+    modal.style.display = "none";
+  }
+
 }
 
 
@@ -2355,7 +2359,11 @@ window.addEventListener("load", () => {
   // TAMPILKAN APP
   // ======================
 
-  document.getElementById("adminApp").style.display = "block";
+  const adminApp = document.getElementById("adminApp");
+
+if(adminApp){
+  adminApp.style.display = "block";
+}
 
   // ======================
   // HILANGKAN LOADER
@@ -2407,57 +2415,107 @@ window.addEventListener("load", () => {
 
 
 
+// =======================
+// KONTAK
+// =======================
 
-// 🔥 WAJIB GLOBAL
 window.showContact = function(el){
+
   show("contactPage", el);
 
-  setTimeout(()=>{
-    loadContactUser();
-  },200);
-}
+  setTimeout(() => {
+    window.loadContactUser();
+  }, 200);
 
+};
 
-window.saveContact = function(){
-  const email = document.getElementById("emailInput").value;
-  const wa = document.getElementById("waInput").value;
-  const jam = document.getElementById("jamInput").value;
+window.saveContact = window.saveContact;
+window.loadContactUser = window.loadContactUser;
 
-  set(ref(realtimeDB, "setting/contact"), {
-    email, 
-    wa, 
-    jam
-  });
-
-  alert("Berhasil disimpan!");
-}
-
-
-async function loadContactUser(){
-  console.log("🔥 FUNCTION KE PANGGIL");
+console.log("saveContact =", window.saveContact);
+console.log("loadContactUser =", window.loadContactUser);
+window.saveContact = async function(){
 
   try{
-    const snap = await get(ref(realtimeDB, "setting/contact")); // <-- pakai ref
 
-    console.log("🔥 SNAP:", snap);
+    const emailInput = document.getElementById("emailInput");
+    const waInput    = document.getElementById("waInput");
+    const jamInput   = document.getElementById("jamInput");
 
-    if(!snap.exists()){
-      console.warn("❌ data tidak ada");
+    if(!emailInput || !waInput || !jamInput){
+      alert("Input kontak tidak ditemukan!");
       return;
     }
 
-    const data = snap.val();
-    console.log("🔥 DATA:", data);
+    const email = emailInput.value.trim();
+    const wa    = waInput.value.trim();
+    const jam   = jamInput.value.trim();
 
-    document.getElementById("email").innerText = data.email || "-";
-    document.getElementById("wa").innerText = data.wa || "-";
-    document.getElementById("jam").innerText = data.jam || "-";
+    await set(
+      ref(realtimeDB, "setting/contact"),
+      {
+        email,
+        wa,
+        jam
+      }
+    );
+
+    alert("Berhasil disimpan!");
+
+    await window.loadContactUser();
 
   }catch(err){
-    console.error("❌ ERROR FIREBASE:", err);
-  }
-}
 
+    console.error("SAVE CONTACT ERROR:", err);
+    alert("Gagal menyimpan data!");
+
+  }
+
+};
+
+
+window.loadContactUser = async function(){
+
+  try{
+
+    const snap = await get(
+      ref(realtimeDB, "setting/contact")
+    );
+
+    if(!snap.exists()){
+      console.warn("Data kontak belum ada");
+      return;
+    }
+
+    const data = snap.val() || {};
+
+    const emailEl = document.getElementById("email");
+    const waEl    = document.getElementById("wa");
+    const jamEl   = document.getElementById("jam");
+
+    if(emailEl) emailEl.textContent = data.email || "-";
+    if(waEl)    waEl.textContent    = data.wa || "-";
+    if(jamEl)   jamEl.textContent   = data.jam || "-";
+
+    const emailInput = document.getElementById("emailInput");
+    const waInput    = document.getElementById("waInput");
+    const jamInput   = document.getElementById("jamInput");
+
+    if(emailInput) emailInput.value = data.email || "";
+    if(waInput)    waInput.value    = data.wa || "";
+    if(jamInput)   jamInput.value   = data.jam || "";
+
+  }catch(err){
+
+    console.error("LOAD CONTACT ERROR:", err);
+
+  }
+
+};
+
+
+// TEST GLOBAL
+console.log("saveContact =", typeof window.saveContact);
 
 
 
